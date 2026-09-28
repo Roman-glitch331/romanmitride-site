@@ -6,7 +6,7 @@ import Base from '../layouts/Base.astro';
 import { identite } from '../content/site';
 ---
 <Base title="Règles de confidentialité · Roman Mitride" description="Règles de confidentialité du site romanmitride.fr et des outils personnels Deneb et BMX Flatland Prospector.">
-  <main class="prose-legal mx-auto max-w-3xl px-6 py-16 leading-relaxed">
+  <main class="prose-legal mx-auto max-w-3xl px-6 pt-36 pb-16 leading-relaxed">
     <h1 class="text-3xl font-semibold">Règles de confidentialité</h1>
     <p class="mt-2 text-attenue">Dernière mise à jour : 25 septembre 2026</p>
 
@@ -45,10 +45,24 @@ import { identite } from '../content/site';
     <h2>3. Contact</h2>
     <p>Roman MITRIDE — <a href={`mailto:${identite.email}`}>{identite.email}</a></p>
 
-    <!-- TODO(lancement) : section « Visiteurs du site » (formulaire de devis, anti-spam Turnstile,
-         mesure d'audience Umami sans cookie + lien d'opposition, hébergement OVH, durées de conservation).
-         À rédiger quand les services seront réellement configurés : la page ne doit décrire que ce qui existe,
-         puis mettre à jour la date ci-dessus. -->
+    <!-- À la mise en ligne : vérifier que chaque service ci-dessous est réellement configuré, puis mettre à jour la date. -->
+    <h2 id="visiteurs">4. Visiteurs du site romanmitride.fr</h2>
+    <p><strong>Formulaire de devis.</strong> Les informations saisies (nom, e-mail, téléphone, prestation, date, lieu, message)
+      servent uniquement à répondre à votre demande et à établir un devis. Elles sont transmises par le service
+      Formspree (États-Unis), qui les achemine vers la boîte e-mail de Roman MITRIDE, et sont conservées au plus trois ans
+      après le dernier échange. Base légale : votre consentement, recueilli par la case à cocher du formulaire.</p>
+    <p><strong>Protection contre les robots.</strong> Le formulaire utilise Cloudflare Turnstile, qui vérifie que l’envoi vient
+      d’un humain sans poser de cookie publicitaire. Cloudflare traite pour cela des données techniques (adresse IP,
+      navigateur) dans ce seul but.</p>
+    <p><strong>Mesure d’audience.</strong> Le site utilise Umami, hébergé sur le serveur de Roman MITRIDE chez OVH (Union
+      européenne). Umami ne dépose aucun cookie, ne suit pas les visiteurs d’un site à l’autre et ne produit que des
+      statistiques agrégées (pages vues, provenance, type d’appareil). Les données sont conservées au plus 25 mois.
+      Vous pouvez vous y opposer en activant l’option « Ne pas suivre » (Do Not Track) de votre navigateur.</p>
+    <p><strong>Vidéos.</strong> Les vidéos sont hébergées sur ce site : aucun contenu de réseau social n’est chargé tant que
+      vous ne cliquez pas sur un lien vers Instagram.</p>
+    <p><strong>Hébergement.</strong> OVH SAS, 2 rue Kellermann, 59100 Roubaix, France.</p>
+    <p>Vous pouvez demander l’accès, la rectification ou la suppression de vos données à l’adresse indiquée en section 3, et saisir la
+      <a href="https://www.cnil.fr/fr/plaintes">CNIL</a> si besoin.</p>
 
     <p class="mt-10"><a href="/">← Retour à l’accueil</a></p>
   </main>

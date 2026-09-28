@@ -1,27 +1,178 @@
 ---
-// Squelette : la mise en page définitive (hero vidéo, palette, galerie) attend les médias de Roman.
+import { getImage } from 'astro:assets';
 import Base from '../layouts/Base.astro';
-import { identite, palmares, phraseCitable, prestations, tarifs } from '../content/site';
----
-<Base title="Roman Mitride · Rider BMX Flatland professionnel" description={phraseCitable}>
-  <main class="mx-auto max-w-5xl px-6 py-16">
-    <h1 class="text-4xl font-semibold">{identite.nom}, rider BMX Flatland professionnel</h1>
-    <p class="mt-4 max-w-2xl text-attenue">{phraseCitable}</p>
-    <ul class="mt-6 flex flex-wrap gap-3">
-      {palmares.map((p) => <li class="rounded-full border px-4 py-1">{p.rang} {p.libelle} {p.annee}</li>)}
-    </ul>
+import LazyVideo from '../components/LazyVideo.astro';
+import ContactLinks from '../components/ContactLinks.astro';
+import DevisForm from '../components/DevisForm.astro';
+import ReelsCarousel from '../components/ReelsCarousel.tsx';
+import Gallery from '../components/Gallery.tsx';
+import { identite, palmares, phraseCitable, flatlandEnDeuxPhrases, cartes, publics, reels, tarifs, credits } from '../content/site';
 
-    <section id="prestations" class="mt-16">
-      <h2 class="text-2xl font-semibold">Prestations</h2>
-      <ul class="mt-4 grid gap-4 md:grid-cols-2">
-        {prestations.map((p) => (
-          <li class="rounded-2xl border p-6">
-            <h3 class="text-lg font-semibold"><a href={`/${p.slug}`}>{p.titre}</a></h3>
-            <p class="mt-2 text-attenue">{p.resume}</p>
+import heroH from '../assets/photos/hero-bmx-flatland-mur-raye.jpg';
+import heroV from '../assets/photos/bmx-flatland-mur-raye-face.jpg';
+import portrait from '../assets/photos/portrait-roman-mitride.webp';
+
+// Hero : photo horizontale sur ordinateur, verticale sur mobile (aucune vidéo au chargement).
+const heroDesk = await getImage({ src: heroH, width: 1920, format: 'avif' });
+const heroDeskWebp = await getImage({ src: heroH, width: 1920, format: 'webp' });
+const heroMob = await getImage({ src: heroV, width: 828, format: 'avif' });
+const heroMobWebp = await getImage({ src: heroV, width: 828, format: 'webp' });
+const portraitImg = await getImage({ src: portrait, width: 900, format: 'webp' });
+
+// Galerie : textes alternatifs descriptifs (la figure, l'action, le lieu).
+const W = credits.weidemann;
+const galerieSrc = import.meta.glob<{ default: ImageMetadata }>('../assets/photos/*', { eager: true });
+const galerieDef = [
+  ['bmx-flatland-manege-heure-doree.jpg', 'Roman Mitride en équilibre sur la roue avant, sur un miroir d’eau devant un manège à l’heure dorée', W],
+  ['show-bmx-flatland-public.jpg', 'Roman Mitride pendant un show de BMX Flatland, le public souriant derrière les barrières', credits.public],
+  ['bmx-flatland-eclaboussure.jpg', 'Figure de BMX Flatland dans un miroir d’eau, gerbe d’éclaboussures sous un ciel d’orage', W],
+  ['bmx-flatland-statue-vertical.jpg', 'Rotation du vélo au crépuscule, devant une statue et des grilles en fer forgé', W],
+  ['bmx-flatland-vue-plongee-ombre.jpg', 'Vue en plongée d’une figure de BMX Flatland, l’ombre du rider projetée sur un sol rayé', W],
+  ['bmx-flatland-mur-raye-dos.jpg', 'Roman Mitride de dos, pied levé, devant un mur à rayures noires et blanches', W],
+  ['roman-mitride-reflet.jpg', 'Roman Mitride tenant son BMX, son reflet dans une vitre en ville', W],
+  ['roman-mitride-marche-ombre.jpg', 'Roman Mitride marchant à côté de son BMX, longues ombres sur un sol rayé', W],
+  ['bmx-flatland-tailwhip.webp', 'Roman Mitride fait tourner son vélo en appui sur une jambe, devant un escalier', undefined],
+] as const;
+const galerie = await Promise.all(galerieDef.map(async ([f, alt, credit]) => {
+  const src = galerieSrc[`../assets/photos/${f}`].default;
+  const thumb = await getImage({ src, width: 700, format: 'webp' });
+  const full = await getImage({ src, width: 1800, format: 'webp' });
+  return { thumb: thumb.src, full: full.src, alt, w: thumb.attributes.width ?? src.width, h: thumb.attributes.height ?? src.height, credit };
+}));
+
+const posters = import.meta.glob<{ default: ImageMetadata }>('../assets/posters/*.jpg', { eager: true });
+const reelsProps = await Promise.all(reels.map(async (r) => {
+  const p = posters[`../assets/posters/${r.video}.jpg`]?.default;
+  return { ...r, poster: p ? (await getImage({ src: p, width: 540, format: 'webp' })).src : undefined };
+}));
+
+const jsonld = [{
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'Roman Mitride · BMX Flatland',
+  url: 'https://romanmitride.fr/',
+  inLanguage: 'fr',
+}];
+---
+<Base title="Roman Mitride · Rider BMX Flatland professionnel, shows et initiations" description={phraseCitable} jsonld={jsonld}>
+  <!-- HERO -->
+  <section class="relative overflow-hidden md:flex md:min-h-[100svh] md:items-center">
+    <picture>
+      <source media="(min-width: 768px)" srcset={heroDesk.src} type="image/avif" />
+      <source media="(min-width: 768px)" srcset={heroDeskWebp.src} type="image/webp" />
+      <source srcset={heroMob.src} type="image/avif" />
+      <img src={heroMobWebp.src} alt="Roman Mitride en figure de BMX Flatland, roue avant levée, devant un mur à rayures noires et blanches"
+        class="block h-[68svh] w-full object-cover object-[center_25%] md:absolute md:inset-0 md:h-full md:object-left" fetchpriority="high" decoding="async" />
+    </picture>
+    <div class="pointer-events-none absolute inset-x-0 top-0 h-[68svh] bg-gradient-to-t from-fond via-transparent to-fond/40 md:hidden"></div>
+    <div class="pointer-events-none absolute inset-0 hidden bg-gradient-to-l from-fond/95 via-fond/60 to-transparent md:block"></div>
+    <div class="relative z-10 -mt-16 w-full px-6 pb-4 md:ml-auto md:mt-0 md:w-[52%] md:pb-0 md:pr-16 md:pt-24">
+      <p class="kicker animate-fade-rise">BMX Flatland · Pau · toute la France</p>
+      <h1 class="font-display mt-4 text-5xl leading-[0.95] tracking-tight sm:text-6xl lg:text-7xl animate-fade-rise">
+        Roman Mitride, <em class="text-accent">rider BMX Flatland</em> professionnel
+      </h1>
+      <p class="mt-6 max-w-xl text-lg text-texte/85 animate-fade-rise-1">
+        Shows, initiations et tournages pour vos événements : festivals, collectivités, salons, entreprises et marques.
+      </p>
+      <ul class="mt-6 flex flex-wrap gap-2 animate-fade-rise-1" aria-label="Palmarès">
+        {palmares.map((p) => (
+          <li class="liquid-glass rounded-full px-4 py-2 text-sm">
+            <span class="text-accent">{p.rang}</span> {p.libelle} {p.annee}
           </li>
         ))}
       </ul>
-      <p class="mt-6">Shows à partir de {tarifs.showAPartirDe} €. {tarifs.mentionDevis}</p>
-    </section>
-  </main>
+      <div class="mt-8 flex flex-wrap gap-3 animate-fade-rise-2">
+        <a href="#devis" class="btn-accent" data-umami-event="devis-clic" data-umami-event-emplacement="hero">Demander un devis</a>
+        <a href="#prestations" class="liquid-glass btn-glass">Voir les prestations</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- À PROPOS -->
+  <section id="a-propos" class="reveal mx-auto grid max-w-6xl items-center gap-10 px-6 pt-24 md:grid-cols-[1fr_1.1fr] md:pt-32">
+    <img src={portraitImg.src} alt="Portrait de Roman Mitride, casquette noire, tenant son BMX devant un bâtiment moderne"
+      width={portraitImg.attributes.width} height={portraitImg.attributes.height} loading="lazy" decoding="async"
+      class="aspect-[4/5] w-full rounded-3xl object-cover object-[60%_center]" />
+    <div>
+      <p class="kicker">À propos</p>
+      <h2 class="font-display mt-3 text-4xl leading-tight md:text-5xl">Le vélo comme <em class="text-accent">terrain de jeu</em></h2>
+      <p class="mt-6 text-lg leading-relaxed">{phraseCitable}</p>
+      <p class="mt-4 leading-relaxed text-texte/85">{flatlandEnDeuxPhrases}</p>
+      <p class="mt-4 leading-relaxed text-texte/85">{identite.zone}</p>
+      <!-- TODO(Roman) : 2-3 phrases sur ton parcours (depuis quand tu rides, déclic, ce qui te motive). -->
+    </div>
+  </section>
+
+  <!-- VITRINE INSTAGRAM -->
+  <section class="reveal mx-auto max-w-6xl px-6 pt-24 md:pt-32" aria-labelledby="titre-insta">
+    <p class="kicker">En vidéo</p>
+    <h2 id="titre-insta" class="font-display mt-3 text-4xl md:text-5xl">Sur <em class="text-accent">Instagram</em></h2>
+    <div class="mt-8">
+      <ReelsCarousel client:visible reels={reelsProps} profil={identite.instagram} />
+    </div>
+  </section>
+
+  <!-- PRESTATIONS -->
+  <section id="prestations" class="reveal mx-auto max-w-6xl px-6 pt-24 md:pt-32">
+    <div class="flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <p class="kicker">Prestations</p>
+        <h2 class="font-display mt-3 text-4xl md:text-5xl">Ce que je propose</h2>
+      </div>
+      <p class="text-attenue">Shows à partir de <span class="text-accent">{tarifs.showAPartirDe} €</span>, devis sur mesure.</p>
+    </div>
+    <ul class="mt-10 grid gap-6 md:grid-cols-2">
+      {cartes.map((c) => (
+        <li>
+          <a href={c.href} class="liquid-glass group block overflow-hidden rounded-3xl" data-umami-event="prestation-clic" data-umami-event-carte={c.titre}>
+            <div class="aspect-[4/3] overflow-hidden">
+              <LazyVideo name={c.video} label={`Extrait vidéo : ${c.titre}`} class="transition-transform duration-700 group-hover:scale-105" />
+            </div>
+            <div class="p-6 md:p-8">
+              <h3 class="text-2xl tracking-tight">{c.titre} <span aria-hidden="true" class="text-accent">↗</span></h3>
+              <p class="mt-2 text-attenue">{c.texte}</p>
+            </div>
+          </a>
+        </li>
+      ))}
+    </ul>
+    <div class="mt-10 flex flex-wrap items-center gap-4">
+      <a href="#devis" class="btn-accent" data-umami-event="devis-clic" data-umami-event-emplacement="prestations">Demander un devis</a>
+      <p class="text-sm text-attenue">{tarifs.mentionDevis}</p>
+    </div>
+  </section>
+
+  <!-- GALERIE -->
+  <section id="galerie" class="reveal mx-auto max-w-6xl px-6 pt-24 md:pt-32">
+    <p class="kicker">Galerie</p>
+    <h2 class="font-display mt-3 text-4xl md:text-5xl">En <em class="text-accent">images</em></h2>
+    <div class="mt-10"><Gallery client:visible photos={galerie} /></div>
+  </section>
+
+  <!-- POUR QUI -->
+  <section class="reveal mx-auto max-w-6xl px-6 pt-24 md:pt-32">
+    <p class="kicker">Pour qui ?</p>
+    <h2 class="font-display mt-3 text-4xl md:text-5xl">Pour tous les événements</h2>
+    <ul class="mt-10 grid grid-cols-2 gap-3 md:gap-4 lg:grid-cols-3">
+      {publics.map((p) => (
+        <li class="rounded-2xl border border-ligne p-4 md:p-6">
+          <h3 class="font-medium md:text-lg">{p.titre}</h3>
+          <p class="mt-1 text-sm text-attenue md:mt-2 md:text-base">{p.texte}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <!-- DEVIS -->
+  <section id="devis" class="reveal mx-auto max-w-6xl px-6 pt-24 md:pt-32">
+    <div class="liquid-glass rounded-3xl p-6 md:p-12">
+      <p class="kicker">Devis</p>
+      <h2 class="font-display mt-3 text-4xl md:text-5xl">Parlons de <em class="text-accent">votre événement</em></h2>
+      <p class="mt-4 max-w-2xl text-texte/85">
+        Shows à partir de {tarifs.showAPartirDe} €. {tarifs.mentionDevis} Le plus simple : appelez-moi, ou laissez vos coordonnées et je vous rappelle.
+      </p>
+      <div class="mt-8"><ContactLinks emplacement="devis" /></div>
+      <div class="mt-10 border-t border-ligne pt-10"><DevisForm /></div>
+    </div>
+  </section>
 </Base>

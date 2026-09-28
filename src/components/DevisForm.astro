@@ -1,0 +1,87 @@
+---
+// Formulaire court -> Formspree (sans backend), anti-spam : honeypot + Cloudflare Turnstile (sans cookie).
+// Clés publiques dans .env : PUBLIC_FORMSPREE_ID, PUBLIC_TURNSTILE_SITEKEY (voir .env.example).
+const formspree = import.meta.env.PUBLIC_FORMSPREE_ID;
+const sitekey = import.meta.env.PUBLIC_TURNSTILE_SITEKEY;
+const actif = Boolean(formspree && sitekey);
+const prestations = ['Show solo', 'Show duo', 'Initiation BMX', 'Tournage & images', 'Je ne sais pas encore'];
+const champ = 'mt-1 w-full rounded-xl border border-ligne bg-fond px-4 py-3 text-texte placeholder:text-attenue/70 focus:border-accent';
+---
+<form
+  id="devis-form"
+  action={actif ? `https://formspree.io/f/${formspree}` : '#devis'}
+  method="POST"
+  class="grid gap-4 sm:grid-cols-2"
+  novalidate
+  data-actif={actif ? '1' : '0'}
+>
+  <p class="sm:col-span-2 text-sm text-attenue">Les champs marqués * sont obligatoires.</p>
+  <label class="text-sm">Nom *<input name="nom" required autocomplete="name" class={champ} /></label>
+  <label class="text-sm">E-mail *<input name="email" type="email" required autocomplete="email" class={champ} /></label>
+  <label class="text-sm">Téléphone *<input name="telephone" type="tel" required autocomplete="tel" pattern="[0-9 +.()-]{10,}" class={champ} /></label>
+  <label class="text-sm">Prestation *
+    <select name="prestation" required class={champ}>
+      <option value="">Choisir…</option>
+      {prestations.map((p) => <option>{p}</option>)}
+    </select>
+  </label>
+  <label class="text-sm">Date de l’événement<input name="date" type="date" class={champ} /></label>
+  <label class="text-sm">Lieu (ville)<input name="lieu" autocomplete="address-level2" class={champ} /></label>
+  <label class="text-sm sm:col-span-2">Message<textarea name="message" rows="4" class={champ} placeholder="Type d’événement, public attendu, horaires…"></textarea></label>
+
+  <!-- Piège à robots : invisible pour les humains. -->
+  <div aria-hidden="true" class="absolute -left-[9999px]"><label>Ne pas remplir<input name="_gotcha" tabindex="-1" autocomplete="off" /></label></div>
+
+  <label class="flex items-start gap-3 text-sm sm:col-span-2">
+    <input type="checkbox" name="consentement" required class="mt-1 h-4 w-4 accent-[#ddbb7f]" />
+    <span>J’accepte que ces informations soient utilisées pour répondre à ma demande de devis.
+      <a href="/confidentialite.html#visiteurs" class="underline">En savoir plus</a> *</span>
+  </label>
+
+  {sitekey && <div class="cf-turnstile sm:col-span-2" data-sitekey={sitekey} data-theme="dark" data-language="fr"></div>}
+
+  <div class="sm:col-span-2 flex flex-wrap items-center gap-4">
+    <button type="submit" class="btn-accent" data-umami-event="devis-envoi-clic">Envoyer ma demande</button>
+    <p id="devis-statut" role="status" aria-live="polite" class="text-sm"></p>
+  </div>
+</form>
+{sitekey && <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>}
+
+<script>
+  const form = document.getElementById('devis-form') as HTMLFormElement;
+  const statut = document.getElementById('devis-statut')!;
+  const track = (n: string, d?: object) => (window as any).umami?.track(n, d);
+  let ouvert = false;
+  form.addEventListener('focusin', () => { if (!ouvert) { ouvert = true; track('formulaire-ouverture'); } });
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    form.querySelectorAll('[aria-invalid]').forEach((el) => el.removeAttribute('aria-invalid'));
+    if (!form.checkValidity()) {
+      const invalides = [...form.elements].filter((el) => !(el as HTMLInputElement).checkValidity()) as HTMLElement[];
+      invalides.forEach((el) => el.setAttribute('aria-invalid', 'true'));
+      statut.textContent = 'Merci de compléter : ' + invalides.map((el) => el.closest('label')?.textContent?.split('*')[0].trim()).join(', ') + '.';
+      invalides[0]?.focus();
+      return;
+    }
+    if (form.dataset.actif !== '1') {
+      statut.textContent = 'Le formulaire n’est pas encore activé : appelez-moi ou écrivez-moi avec les boutons ci-dessus.';
+      return;
+    }
+    statut.textContent = 'Envoi en cours…';
+    try {
+      const r = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } });
+      if (!r.ok) throw new Error(String(r.status));
+      form.reset();
+      statut.textContent = 'Merci, votre demande est bien partie. Je vous rappelle rapidement pour en parler.';
+      track('formulaire-succes');
+    } catch (err) {
+      statut.textContent = 'L’envoi a échoué. Appelez-moi ou écrivez-moi directement, je réponds vite.';
+      track('formulaire-erreur', { code: String(err).slice(0, 40) });
+    }
+  });
+</script>
+
+<style>
+  [aria-invalid='true'] { border-color: #f2a7a7; }
+</style>

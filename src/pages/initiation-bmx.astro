@@ -1,0 +1,75 @@
+---
+import ServicePage from '../layouts/ServicePage.astro';
+import LazyVideo from '../components/LazyVideo.astro';
+import img from '../assets/photos/bmx-flatland-manege-heure-doree.jpg';
+import { TODO } from '../content/site';
+---
+<ServicePage
+  title="Initiation BMX Flatland : faire essayer le BMX à votre public · Roman Mitride"
+  description="Initiation au BMX Flatland par un rider professionnel pour collectivités, festivals, centres de loisirs et entreprises. Jusqu’à 8 vélos fournis, partout en France."
+  h1="Initiation BMX Flatland"
+  intro="Passer du statut de spectateur à celui de rider : une initiation au BMX Flatland encadrée par un professionnel, avec jusqu’à 8 vélos fournis."
+  image={img}
+  imageAlt="Roman Mitride en équilibre sur la roue avant de son BMX, sur un miroir d’eau à l’heure dorée"
+  slug="initiation-bmx"
+  serviceName="Initiation BMX Flatland"
+  fiche={[
+    { label: 'Matériel', valeur: 'Jusqu’à 8 vélos fournis' },
+    { label: 'Public', valeur: 'Adapté lors de l’échange téléphonique' },
+    { label: 'Durée', valeur: TODO('durée d’une initiation') },
+    { label: 'Installation', valeur: 'Sol plat, aucune rampe ni module' },
+    { label: 'Tarif', valeur: 'Sur devis, discuté au téléphone' },
+    { label: 'Zone', valeur: 'Toute la France, depuis Pau' },
+  ]}
+>
+  <p>
+    Une <strong>initiation BMX Flatland</strong>, c’est l’occasion pour votre public de découvrir de l’intérieur une discipline
+    qu’il a souvent seulement vue en vidéo. Pas de rampe, pas de vitesse, pas de saut : le Flatland se pratique sur un sol plat,
+    en équilibre, ce qui en fait une porte d’entrée accessible vers le BMX. On apprend à sentir le vélo, à trouver son
+    équilibre, à réussir ses premiers mouvements, et on repart avec l’envie de continuer.
+  </p>
+
+  <h2>Comment se passe une initiation ?</h2>
+  <p>
+    Je fournis <strong>jusqu’à 8 vélos</strong>, ce qui permet de faire tourner les participants et de garder un rythme soutenu.
+    Chaque atelier commence par une courte démonstration pour montrer ce qu’est le Flatland, puis chacun passe à la pratique,
+    guidé pas à pas. Les exercices sont choisis selon l’âge et l’aisance des participants : l’objectif n’est pas la performance,
+    mais le plaisir de réussir quelque chose de nouveau sur un vélo.
+  </p>
+
+  <div class="not-prose my-8 aspect-[9/16] max-w-xs overflow-hidden rounded-3xl sm:max-w-sm">
+    <LazyVideo name="initiation-bmx-gymnase" label="Démonstration de BMX Flatland dans un gymnase" />
+  </div>
+
+  <h2>Pour qui ?</h2>
+  <p>
+    L’initiation s’adresse à tous ceux qui veulent proposer une <strong>animation BMX</strong> participative plutôt que seulement
+    un spectacle :
+  </p>
+  <ul>
+    <li><strong>Collectivités</strong> : fêtes de quartier, journées sportives, animations d’été.</li>
+    <li><strong>Festivals et salons</strong> : un espace où le public essaie après avoir regardé le show.</li>
+    <li><strong>Centres de loisirs et accueils de jeunes</strong> : une activité qui change des sports habituels.</li>
+    <li><strong>Entreprises</strong> : une animation originale pour une journée d’équipe ou un événement interne.</li>
+  </ul>
+  <p>
+    Pour les écoles, l’intervention prend la forme d’une démonstration et d’une découverte encadrée : parlons-en au téléphone
+    pour définir un format adapté à votre établissement.
+  </p>
+
+  <h2>Show et initiation : le bon combo</h2>
+  <p>
+    Beaucoup d’organisateurs associent les deux : un <a href="/show-bmx">show BMX Flatland</a> pour capter l’attention, puis
+    une initiation pour que le public passe à l’action. Le show donne envie, l’initiation fait vivre l’expérience. Sur un
+    événement d’une ou plusieurs journées, cette combinaison crée un vrai point de rendez-vous.
+  </p>
+
+  <h2>Organisation et devis</h2>
+  <p>
+    L’initiation se déroule sur un <strong>sol plat</strong>, à l’intérieur comme à l’extérieur. La durée, le nombre de
+    participants et l’espace nécessaire sont définis ensemble. Chaque devis est construit en fonction de la prestation et
+    discuté au téléphone avant sa rédaction. Basé à Pau, je me déplace dans toute la France.
+  </p>
+  <!-- TODO(Roman) : durée type, âge minimum, surface, équipements de sécurité fournis (casques ?). -->
+  <p>Des questions ? Consultez la <a href="/faq">FAQ</a> ou demandez directement un devis.</p>
+</ServicePage>

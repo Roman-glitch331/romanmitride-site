@@ -1,0 +1,63 @@
+---
+import ServicePage from '../layouts/ServicePage.astro';
+import LazyVideo from '../components/LazyVideo.astro';
+import img from '../assets/photos/bmx-flatland-eclaboussure.jpg';
+---
+<ServicePage
+  title="Rider BMX pour tournage : publicité, clip, contenu de marque · Roman Mitride"
+  description="Rider professionnel de BMX Flatland pour vos tournages vidéo et shootings photo : publicité, clip musical, contenu de marque et réseaux sociaux. Partout en France."
+  h1="Rider BMX pour vos tournages et vos images"
+  intro="Vidéo, photo, publicité, clip ou contenu de marque : un rider professionnel de BMX Flatland pour donner du mouvement et de l’énergie à vos images."
+  image={img}
+  imageAlt="Roman Mitride en figure de BMX Flatland dans un miroir d’eau, gerbe d’éclaboussures sous un ciel d’orage"
+  slug="tournage-bmx"
+  serviceName="Tournage BMX"
+  fiche={[
+    { label: 'Formats', valeur: 'Vidéo, photo, publicité, clip, contenu de marque' },
+    { label: 'Lieux', valeur: 'Intérieur ou extérieur, sur sol plat' },
+    { label: 'Tarif', valeur: 'Sur devis, discuté au téléphone' },
+    { label: 'Zone', valeur: 'Toute la France, depuis Pau' },
+  ]}
+>
+  <p>
+    Le BMX Flatland est un sport profondément visuel : des rotations, des équilibres, des lignes de vélo qui dessinent des formes
+    dans l’espace. Pour un <strong>tournage BMX</strong>, cette discipline a un avantage unique : elle se pratique sur place, sur
+    un sol plat, sans rampe ni module à installer. Le rider peut donc évoluer dans le décor que vous avez choisi : une rue, une
+    place, un bâtiment, un studio ou un lieu de marque.
+  </p>
+
+  <h2>Quels types de projets ?</h2>
+  <ul>
+    <li><strong>Publicité</strong> : un rider pour incarner le mouvement, l’agilité ou le style urbain d’une marque.</li>
+    <li><strong>Clip musical</strong> : des figures qui suivent le rythme et donnent une identité visuelle forte.</li>
+    <li><strong>Contenu de marque et réseaux sociaux</strong> : vidéos courtes, formats verticaux, séances photo.</li>
+    <li><strong>Photo</strong> : séances en extérieur ou en studio, à l’heure dorée comme de nuit.</li>
+  </ul>
+
+  <div class="not-prose my-8 aspect-[9/16] max-w-xs overflow-hidden rounded-3xl sm:max-w-sm">
+    <LazyVideo name="bmx-flatland-esplanade" label="Figures de BMX Flatland sur une esplanade devant un bâtiment vitré" />
+  </div>
+
+  <h2>Pourquoi le Flatland fonctionne à l’image</h2>
+  <p>
+    Parce que tout se passe au même endroit. Contrairement aux disciplines de rampe, le Flatland se joue dans un espace réduit,
+    ce qui facilite le cadrage, la lumière et la répétition des prises. Les figures peuvent être refaites pour obtenir l’angle
+    parfait, et le rider s’adapte à la caméra : plans larges pour montrer l’enchaînement, plans serrés sur les mains, les
+    pieds et les roues pour la texture.
+  </p>
+  <p>
+    Les photos de ce site en donnent un aperçu : un mur rayé, un miroir d’eau, une statue au crépuscule. Le décor devient un
+    partenaire de la figure, et chaque lieu raconte une histoire différente.
+  </p>
+
+  <h2>Comment on travaille ensemble</h2>
+  <p>
+    Tout commence par un échange téléphonique : l’intention du projet, le lieu, le format, le planning. Je vous dis ce qui est
+    réalisable sur le sol disponible et quelles figures serviront le mieux votre propos. Chaque devis est ensuite construit en
+    fonction de la prestation et discuté avant sa rédaction.
+  </p>
+  <p>
+    Basé à Pau, je me déplace dans toute la France. Vous organisez aussi un événement ? Découvrez le
+    <a href="/show-bmx">show BMX Flatland</a> et l’<a href="/initiation-bmx">initiation BMX</a>.
+  </p>
+</ServicePage>

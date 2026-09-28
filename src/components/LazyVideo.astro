@@ -1,0 +1,26 @@
+---
+// Vidéo muette en boucle, chargée seulement quand elle devient visible (script dans Base.astro).
+// Le poster est optimisé par Astro (AVIF/WebP) et sert d'image tant que la vidéo n'est pas chargée.
+import { getImage } from 'astro:assets';
+
+interface Props { name: string; label: string; class?: string }
+const { name, label, class: cls = '' } = Astro.props;
+const posters = import.meta.glob<{ default: ImageMetadata }>('../assets/posters/*.jpg', { eager: true });
+const src = posters[`../assets/posters/${name}.jpg`]?.default;
+const poster = src ? await getImage({ src, width: 720, format: 'webp' }) : undefined;
+---
+<video
+  class={`h-full w-full object-cover ${cls}`}
+  data-lazy
+  muted
+  loop
+  playsinline
+  preload="none"
+  poster={poster?.src}
+  aria-label={label}
+  data-umami-event="video-lecture"
+  data-umami-event-video={name}
+>
+  <source data-src={`/media/${name}.mp4`} type="video/mp4" />
+  <source data-src={`/media/${name}.webm`} type="video/webm" />
+</video>

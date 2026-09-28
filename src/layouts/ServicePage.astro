@@ -1,0 +1,90 @@
+---
+import { getImage } from 'astro:assets';
+import Base from './Base.astro';
+import ContactLinks from '../components/ContactLinks.astro';
+import { identite, tarifs } from '../content/site';
+
+interface Props {
+  title: string;
+  description: string;
+  h1: string;
+  intro: string;
+  image: ImageMetadata;
+  imageAlt: string;
+  slug: string;
+  serviceName: string;
+  fiche: { label: string; valeur: string }[];
+}
+const { title, description, h1, intro, image, imageAlt, slug, serviceName, fiche } = Astro.props;
+const img = await getImage({ src: image, width: 1600, format: 'webp' });
+const url = `https://romanmitride.fr/${slug}`;
+
+const autres = [
+  { href: '/show-bmx', label: 'Show BMX' },
+  { href: '/initiation-bmx', label: 'Initiation BMX' },
+  { href: '/tournage-bmx', label: 'Tournages & images' },
+].filter((a) => a.href !== `/${slug}`);
+
+const jsonld = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: serviceName,
+    serviceType: serviceName,
+    description,
+    url,
+    provider: { '@id': 'https://romanmitride.fr/#roman' },
+    areaServed: { '@type': 'Country', name: 'France' },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Accueil', item: 'https://romanmitride.fr/' },
+      { '@type': 'ListItem', position: 2, name: serviceName, item: url },
+    ],
+  },
+];
+---
+<Base title={title} description={description} jsonld={jsonld}>
+  <header class="relative flex min-h-[70svh] items-end overflow-hidden">
+    <img src={img.src} alt={imageAlt} class="absolute inset-0 h-full w-full object-cover" fetchpriority="high" decoding="async" />
+    <div class="absolute inset-0 bg-gradient-to-t from-fond via-fond/50 to-transparent"></div>
+    <div class="relative z-10 mx-auto w-full max-w-4xl px-6 pb-12 pt-32">
+      <nav aria-label="Fil d’Ariane" class="text-sm text-attenue animate-fade-rise">
+        <a href="/" class="underline">Accueil</a> <span aria-hidden="true">/</span> <span aria-current="page">{serviceName}</span>
+      </nav>
+      <h1 class="font-display mt-4 text-4xl leading-tight md:text-6xl animate-fade-rise">{h1}</h1>
+      <p class="mt-5 max-w-2xl text-lg text-texte/90 animate-fade-rise-1">{intro}</p>
+    </div>
+  </header>
+
+  <div class="mx-auto grid max-w-6xl gap-12 px-6 pt-16 lg:grid-cols-[1fr_20rem]">
+    <article class="prose-site max-w-3xl">
+      <slot />
+    </article>
+    <aside class="lg:sticky lg:top-28 lg:self-start">
+      <div class="liquid-glass rounded-3xl p-6">
+        <h2 class="font-display text-2xl">En bref</h2>
+        <dl class="mt-4 space-y-3 text-sm">
+          {fiche.map((f) => (
+            <div><dt class="text-attenue">{f.label}</dt><dd class="mt-0.5">{f.valeur}</dd></div>
+          ))}
+        </dl>
+        <a href="/#devis" class="btn-accent mt-6 w-full justify-center" data-umami-event="devis-clic" data-umami-event-emplacement={slug}>Demander un devis</a>
+      </div>
+    </aside>
+  </div>
+
+  <section class="mx-auto max-w-6xl px-6 pt-20">
+    <div class="liquid-glass rounded-3xl p-6 md:p-10">
+      <h2 class="font-display text-3xl">Un projet ? Parlons-en.</h2>
+      <p class="mt-3 text-texte/85">{tarifs.mentionDevis} {identite.zone}</p>
+      <div class="mt-6"><ContactLinks emplacement={slug} /></div>
+      <p class="mt-8 text-sm text-attenue">
+        Voir aussi : {autres.map((a, i) => <><a href={a.href} class="underline">{a.label}</a>{i < autres.length - 1 ? ' · ' : ''}</>)}
+        · <a href="/faq" class="underline">Questions fréquentes</a>
+      </p>
+    </div>
+  </section>
+</Base>

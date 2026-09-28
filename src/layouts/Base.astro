@@ -1,37 +1,141 @@
 ---
 import '../styles/global.css';
-import { identite } from '../content/site';
+import { identite, phraseCitable, credits } from '../content/site';
+import Nav from '../components/Nav.astro';
 
-interface Props { title: string; description: string; noindex?: boolean }
-const { title, description, noindex = false } = Astro.props;
-const canonical = new URL(Astro.url.pathname.replace(/\.html$/, '').replace(/\/index$/, '/'), Astro.site);
+interface Props {
+  title: string;
+  description: string;
+  noindex?: boolean;
+  jsonld?: Record<string, unknown>[];
+}
+const { title, description, noindex = false, jsonld = [] } = Astro.props;
+const path = Astro.url.pathname.replace(/\.html$/, '').replace(/\/index$/, '/');
+const canonical = new URL(path === '' ? '/' : path, Astro.site).href;
+const ogImage = new URL('/og-image.jpg', Astro.site).href;
+
+const person = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  '@id': 'https://romanmitride.fr/#roman',
+  name: identite.nom,
+  jobTitle: identite.metier,
+  description: phraseCitable,
+  url: 'https://romanmitride.fr/',
+  image: ogImage,
+  email: `mailto:${identite.email}`,
+  telephone: '+33628783455',
+  homeLocation: { '@type': 'Place', name: 'Pau, France' },
+  sameAs: [identite.instagram, identite.tiktok],
+};
+
+const umamiSrc = import.meta.env.PUBLIC_UMAMI_SRC;
+const umamiId = import.meta.env.PUBLIC_UMAMI_ID;
 ---
 <!doctype html>
 <html lang="fr">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script is:inline>document.documentElement.classList.add('js')</script>
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     {noindex && <meta name="robots" content="noindex" />}
+    <meta name="theme-color" content="#171917" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="fr_FR" />
+    <meta property="og:site_name" content="Roman Mitride" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script type="application/ld+json" set:html={JSON.stringify([person, ...jsonld])} />
+    {umamiSrc && umamiId && (
+      <script defer src={umamiSrc} data-website-id={umamiId} data-exclude-search="true" data-do-not-track="true"></script>
+    )}
   </head>
   <body class="min-h-screen font-sans antialiased">
-    <slot />
-    <footer class="mx-auto max-w-5xl px-6 py-10 text-sm text-attenue">
-      <p>© {new Date().getFullYear()} {identite.nom} · BMX Flatland Pau</p>
-      <p class="mt-2">
-        Ce site présente aussi les outils personnels « Deneb » et « BMX Flatland Prospector » utilisés par Roman MITRIDE.
+    <a href="#contenu" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 btn-accent">Aller au contenu</a>
+    <Nav />
+    <div id="contenu"><slot /></div>
+
+    <footer class="border-t border-ligne mt-24">
+      <div class="mx-auto grid max-w-6xl gap-8 px-6 py-12 text-sm text-attenue md:grid-cols-3">
+        <div>
+          <p class="font-display text-2xl text-texte">Roman Mitride</p>
+          <p class="mt-2">Rider professionnel de BMX Flatland · Pau · toute la France</p>
+        </div>
+        <nav aria-label="Pages" class="flex flex-col gap-2">
+          <a href="/show-bmx" class="hover:text-texte">Show BMX</a>
+          <a href="/initiation-bmx" class="hover:text-texte">Initiation BMX</a>
+          <a href="/tournage-bmx" class="hover:text-texte">Tournages & images</a>
+          <a href="/faq" class="hover:text-texte">FAQ</a>
+          <a href="/#devis" class="hover:text-texte" data-umami-event="devis-clic" data-umami-event-emplacement="footer">Demander un devis</a>
+        </nav>
+        <div class="flex flex-col gap-2">
+          <a href={identite.instagram} class="hover:text-texte" rel="me noopener">Instagram @romanmitride</a>
+          <a href={identite.tiktok} class="hover:text-texte" rel="me noopener">TikTok @roman_mitride</a>
+          <a href="/mentions-legales" class="hover:text-texte">Mentions légales</a>
+          <a href="/confidentialite.html" class="hover:text-texte">Règles de confidentialité</a>
+        </div>
+      </div>
+      <p class="mx-auto max-w-6xl px-6 pb-10 text-xs text-attenue">
+        Photos : {credits.weidemann}, sauf mention contraire. ·
+        Ce site présente aussi les outils personnels « Deneb » et « BMX Flatland Prospector » utilisés par Roman MITRIDE
+        (<a class="underline" href="/confidentialite.html">règles de confidentialité</a>).
       </p>
-      <nav class="mt-3 flex flex-wrap gap-4" aria-label="Liens légaux">
-        <a href="/mentions-legales" class="underline">Mentions légales</a>
-        <a href="/confidentialite.html" class="underline">Règles de confidentialité</a>
-      </nav>
     </footer>
+
+    <script>
+      // Apparition des sections au scroll.
+      const io = new IntersectionObserver((entries) => {
+        for (const e of entries) if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); }
+      }, { rootMargin: '0px 0px -80px 0px' });
+      document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+
+      // Vidéos différées : chargées et lues seulement une fois visibles, jamais si « réduire les animations ».
+      const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const vio = new IntersectionObserver((entries) => {
+        for (const e of entries) {
+          const v = e.target as HTMLVideoElement;
+          if (e.isIntersecting) {
+            if (reduce) continue;
+            if (!v.dataset.loaded) {
+              v.querySelectorAll<HTMLSourceElement>('source[data-src]').forEach((s) => { s.src = s.dataset.src!; });
+              v.load(); v.dataset.loaded = '1';
+            }
+            v.play().catch(() => {});
+          } else v.pause();
+        }
+      }, { rootMargin: '200px' });
+      document.querySelectorAll('video[data-lazy]').forEach((v) => vio.observe(v));
+
+      // Coordonnées protégées des robots : reconstituées au chargement.
+      document.querySelectorAll<HTMLAnchorElement>('a[data-c]').forEach((a) => {
+        const v = atob(a.dataset.c!);
+        const isMail = v.includes('@');
+        a.href = isMail ? 'mailto:' + v + (a.dataset.q ?? '') : 'tel:+33' + v.slice(1);
+        const label = a.querySelector('[data-label]');
+        if (label) label.textContent = isMail ? v : v.replace(/(\d{2})(?=\d)/g, '$1 ');
+      });
+
+      const track = (n: string, d?: object) => (window as any).umami?.track(n, d);
+      // Erreurs JavaScript remontées à Umami (sans donnée personnelle).
+      addEventListener('error', (e) => track('js-error', { message: String(e.message).slice(0, 120), page: location.pathname }));
+      // Profondeur de scroll 25/50/75/100 %.
+      const vus = new Set<number>();
+      addEventListener('scroll', () => {
+        const p = (scrollY + innerHeight) / document.documentElement.scrollHeight * 100;
+        for (const s of [25, 50, 75, 100]) if (p >= s && !vus.has(s)) { vus.add(s); track('scroll', { profondeur: s }); }
+      }, { passive: true });
+    </script>
   </body>
 </html>

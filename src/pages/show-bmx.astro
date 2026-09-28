@@ -1,0 +1,83 @@
+---
+import ServicePage from '../layouts/ServicePage.astro';
+import LazyVideo from '../components/LazyVideo.astro';
+import img from '../assets/photos/show-bmx-flatland-public.jpg';
+import { partenairesDuo, tarifs, TODO } from '../content/site';
+const duo = partenairesDuo.join(', ').replace(/, ([^,]*)$/, ' ou $1');
+---
+<ServicePage
+  title="Show BMX Flatland : démonstration pour vos événements · Roman Mitride"
+  description={`Show BMX Flatland solo (5 à 15 min, plusieurs passages) ou duo (30 à 40 min) par un rider professionnel, partout en France. Dès ${tarifs.showAPartirDe} €, devis sur mesure.`}
+  h1="Show BMX Flatland pour vos événements"
+  intro="Une démonstration de BMX Flatland spectaculaire et accessible à tous les publics : en solo avec animation au micro, ou en duo avec un autre rider professionnel."
+  image={img}
+  imageAlt="Roman Mitride pendant un show de BMX Flatland, devant un public souriant"
+  slug="show-bmx"
+  serviceName="Show BMX Flatland"
+  fiche={[
+    { label: 'Show solo', valeur: '5 à 15 minutes, plusieurs passages possibles dans la journée' },
+    { label: 'Show duo', valeur: '30 à 40 minutes, avec un autre rider pro' },
+    { label: 'Animation', valeur: 'Au micro, possible en solo' },
+    { label: 'Installation', valeur: 'Sol plat, aucune rampe ni module' },
+    { label: 'Surface', valeur: TODO('surface et sol conseillés') },
+    { label: 'Tarif', valeur: `À partir de ${tarifs.showAPartirDe} €, devis discuté au téléphone` },
+    { label: 'Zone', valeur: 'Toute la France, depuis Pau' },
+  ]}
+>
+  <p>
+    Un <strong>show BMX Flatland</strong>, c’est une démonstration où le rider fait tourner, pivoter et tenir son vélo en
+    équilibre sur un sol plat, sans rampe ni tremplin. Les figures s’enchaînent sans interruption, comme une chorégraphie :
+    le public voit tout, de près, et comprend immédiatement la difficulté. C’est ce qui fait du Flatland une animation idéale
+    pour un événement, même quand personne dans l’assistance ne connaît le BMX.
+  </p>
+
+  <h2>Le show solo</h2>
+  <p>
+    Le format le plus souple. Chaque passage dure <strong>entre 5 et 15 minutes</strong>, et plusieurs passages sont possibles
+    dans la même journée : idéal pour rythmer un festival, relancer l’attention sur un salon ou créer des rendez-vous réguliers
+    lors d’une fête de ville. Le show peut être accompagné d’une <strong>animation au micro</strong> : j’explique les figures,
+    je fais participer le public, et chacun repart en ayant compris ce qu’il vient de voir.
+  </p>
+
+  <div class="not-prose my-8 aspect-[9/16] max-w-xs overflow-hidden rounded-3xl sm:max-w-sm">
+    <LazyVideo name="show-bmx-flatland-public" label="Extrait d’un show de BMX Flatland devant le public" />
+  </div>
+
+  <h2 id="duo">Le show duo</h2>
+  <p>
+    Pour un temps fort plus long, le <strong>show duo</strong> dure <strong>entre 30 et 40 minutes</strong>. Je le présente avec un
+    autre rider professionnel : {duo}, selon les disponibilités. Deux styles, deux lectures du Flatland, et un rythme
+    qui tient le public du début à la fin : un format pensé pour la scène principale d’un événement.
+  </p>
+
+  <h2>Pour quels événements ?</h2>
+  <p>
+    Le show s’adapte à la plupart des contextes : <strong>animation BMX pour un festival</strong>, fête de ville ou marché de Noël
+    organisé par une mairie, salon professionnel ou grand public, soirée ou séminaire d’entreprise, inauguration, journée
+    sportive, événement de marque. Comme le Flatland ne demande aucune structure, il peut s’installer sur une place, dans une
+    salle, sur un parking ou au milieu d’un stand.
+  </p>
+  <ul>
+    <li><strong>Collectivités et mairies</strong> : fêtes de ville, journées sportives, animations de fin d’année.</li>
+    <li><strong>Festivals</strong> : un temps fort visuel entre deux concerts, ou plusieurs passages dans la journée.</li>
+    <li><strong>Salons et entreprises</strong> : attirer du monde sur un stand, animer une soirée ou un séminaire.</li>
+  </ul>
+
+  <h2>Ce qu’il faut prévoir</h2>
+  <p>
+    Le Flatland se pratique sur un <strong>sol plat</strong> : pas de rampe, pas de module, pas de montage. Les besoins précis
+    (surface, type de sol, sonorisation pour l’animation au micro) sont vus ensemble lors de notre échange téléphonique, pour
+    adapter la démonstration à votre lieu et à votre public.
+  </p>
+  <!-- TODO(Roman) : surface minimale, type de sol, besoin en sono/micro, temps d'installation. -->
+
+  <h2>Tarif et devis</h2>
+  <p>
+    Les shows commencent à <strong>{tarifs.showAPartirDe} €</strong>. {tarifs.mentionDevis} Basé à Pau, dans le Sud-Ouest, je me
+    déplace dans toute la France : Nouvelle-Aquitaine, Occitanie et au-delà.
+  </p>
+  <p>
+    Vous hésitez entre un show et une <a href="/initiation-bmx">initiation BMX</a> ? Les deux se combinent très bien : le public
+    regarde, puis essaie. Consultez aussi les <a href="/faq">questions fréquentes</a>.
+  </p>
+</ServicePage>
