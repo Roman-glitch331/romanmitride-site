@@ -16,19 +16,19 @@ export const identite = {
   tiktok: 'https://www.tiktok.com/@roman_mitride',
 };
 
-// Palmarès : n'afficher que du sourcé (fatbmx.com, vérifié le 2026-09-25).
-// Le « 17e / 25e mondial » n'est pas sourcé : en attente de validation de Roman.
+// Palmarès : n'afficher que du sourcé.
+// Formulation volontairement exacte : « 17e mondial » laisserait croire au classement général (28e en 2025).
 export const palmares = [
+  { rang: '17e', libelle: 'Coupe du monde UCI de BMX Flatland – FISE Montpellier', annee: 2025,
+    source: 'https://www.uci.org/competition-details/2025/BFR/73825' },
   { rang: '6e', libelle: 'Championnats de France', annee: 2023,
     source: 'https://www.fatbmx.com/bmx-freestyle/item/58777-2023-french-national-flatland-championship-flatland-saint-quentin-en-yvelines-france' },
-  // TODO(Roman) : valider « 28e de la Coupe du monde UCI 2025 » ou fournir la source du classement mondial.
 ];
 
 // Phrase factuelle reprise à l'identique partout (GEO, section 9 du prompt).
-// TODO(Roman) : compléter avec le classement mondial une fois sourcé.
 export const phraseCitable =
-  'Roman Mitride est un rider professionnel de BMX Flatland, 6e aux Championnats de France 2023, ' +
-  'qui propose des shows, des initiations et des tournages partout en France.';
+  'Roman Mitride est un rider professionnel de BMX Flatland, 17e de la Coupe du monde UCI au FISE Montpellier 2025 ' +
+  'et 6e aux Championnats de France 2023, qui propose des shows, des initiations et des tournages partout en France.';
 
 export const tarifs = {
   showAPartirDe: 400,
