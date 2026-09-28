@@ -1,16 +1,16 @@
 ---
 import ServicePage from '../layouts/ServicePage.astro';
 import LazyVideo from '../components/LazyVideo.astro';
-import img from '../assets/photos/bmx-flatland-manege-heure-doree.jpg';
-import { TODO } from '../content/site';
+import { photo } from '../content/photos';
+import { TODO, identite, technique, medias } from '../content/site';
 ---
 <ServicePage
   title="Initiation BMX Flatland : faire essayer le BMX à votre public · Roman Mitride"
   description="Initiation au BMX Flatland par un rider professionnel pour collectivités, festivals, centres de loisirs et entreprises. Jusqu’à 8 vélos fournis, partout en France."
   h1="Initiation BMX Flatland"
   intro="Passer du statut de spectateur à celui de rider : une initiation au BMX Flatland encadrée par un professionnel, avec jusqu’à 8 vélos fournis."
-  image={img}
-  imageAlt="Roman Mitride en équilibre sur la roue avant de son BMX, sur un miroir d’eau à l’heure dorée"
+  image={photo(medias.pages.initiation.photo)}
+  imageAlt={medias.pages.initiation.alt}
   slug="initiation-bmx"
   serviceName="Initiation BMX Flatland"
   fiche={[
@@ -19,7 +19,7 @@ import { TODO } from '../content/site';
     { label: 'Durée', valeur: TODO('durée d’une initiation') },
     { label: 'Installation', valeur: 'Sol plat, aucune rampe ni module' },
     { label: 'Tarif', valeur: 'Sur devis, discuté au téléphone' },
-    { label: 'Zone', valeur: 'Toute la France, depuis Pau' },
+    { label: 'Zone', valeur: identite.zoneCourte },
   ]}
 >
   <p>
@@ -38,7 +38,7 @@ import { TODO } from '../content/site';
   </p>
 
   <div class="not-prose my-8 aspect-[9/16] max-w-xs overflow-hidden rounded-3xl sm:max-w-sm">
-    <LazyVideo name="initiation-bmx-gymnase" label="Démonstration de BMX Flatland dans un gymnase" />
+    <LazyVideo name={medias.pages.initiation.video} label="Démonstration de BMX Flatland dans un gymnase" />
   </div>
 
   <h2>Pour qui ?</h2>
@@ -68,7 +68,7 @@ import { TODO } from '../content/site';
   <p>
     L’initiation se déroule sur un <strong>sol plat</strong>, à l’intérieur comme à l’extérieur. La durée, le nombre de
     participants et l’espace nécessaire sont définis ensemble. Chaque devis est construit en fonction de la prestation et
-    discuté au téléphone avant sa rédaction. Basé à Pau, je me déplace dans toute la France.
+    discuté au téléphone avant sa rédaction. {identite.zone}
   </p>
   <!-- TODO(Roman) : durée type, âge minimum, surface, équipements de sécurité fournis (casques ?). -->
   <p>Des questions ? Consultez la <a href="/faq">FAQ</a> ou demandez directement un devis.</p>

@@ -1,22 +1,23 @@
 ---
+import { identite, technique, medias } from '../content/site';
 import ServicePage from '../layouts/ServicePage.astro';
 import LazyVideo from '../components/LazyVideo.astro';
-import img from '../assets/photos/bmx-flatland-eclaboussure.jpg';
+import { photo } from '../content/photos';
 ---
 <ServicePage
   title="Rider BMX pour tournage : publicité, clip, contenu de marque · Roman Mitride"
   description="Rider professionnel de BMX Flatland pour vos tournages vidéo et shootings photo : publicité, clip musical, contenu de marque et réseaux sociaux. Partout en France."
   h1="Rider BMX pour vos tournages et vos images"
   intro="Vidéo, photo, publicité, clip ou contenu de marque : un rider professionnel de BMX Flatland pour donner du mouvement et de l’énergie à vos images."
-  image={img}
-  imageAlt="Roman Mitride en figure de BMX Flatland dans un miroir d’eau, gerbe d’éclaboussures sous un ciel d’orage"
+  image={photo(medias.pages.tournage.photo)}
+  imageAlt={medias.pages.tournage.alt}
   slug="tournage-bmx"
   serviceName="Tournage BMX"
   fiche={[
     { label: 'Formats', valeur: 'Vidéo, photo, publicité, clip, contenu de marque' },
     { label: 'Lieux', valeur: 'Intérieur ou extérieur, sur sol plat' },
     { label: 'Tarif', valeur: 'Sur devis, discuté au téléphone' },
-    { label: 'Zone', valeur: 'Toute la France, depuis Pau' },
+    { label: 'Zone', valeur: identite.zoneCourte },
   ]}
 >
   <p>
@@ -35,7 +36,7 @@ import img from '../assets/photos/bmx-flatland-eclaboussure.jpg';
   </ul>
 
   <div class="not-prose my-8 aspect-[9/16] max-w-xs overflow-hidden rounded-3xl sm:max-w-sm">
-    <LazyVideo name="bmx-flatland-esplanade" label="Figures de BMX Flatland sur une esplanade devant un bâtiment vitré" />
+    <LazyVideo name={medias.pages.tournage.video} label="Figures de BMX Flatland sur une esplanade devant un bâtiment vitré" />
   </div>
 
   <h2>Pourquoi le Flatland fonctionne à l’image</h2>
@@ -57,7 +58,7 @@ import img from '../assets/photos/bmx-flatland-eclaboussure.jpg';
     fonction de la prestation et discuté avant sa rédaction.
   </p>
   <p>
-    Basé à Pau, je me déplace dans toute la France. Vous organisez aussi un événement ? Découvrez le
+    {identite.zone} Vous organisez aussi un événement ? Découvrez le
     <a href="/show-bmx">show BMX Flatland</a> et l’<a href="/initiation-bmx">initiation BMX</a>.
   </p>
 </ServicePage>

@@ -25,7 +25,7 @@ const person = {
   image: ogImage,
   email: `mailto:${identite.email}`,
   telephone: '+33628783455',
-  homeLocation: { '@type': 'Place', name: 'Pau, France' },
+  homeLocation: [{ '@type': 'Place', name: 'Pau, France' }, { '@type': 'Place', name: 'Bordeaux, France' }],
   sameAs: [identite.instagram, identite.tiktok],
 };
 
@@ -71,7 +71,7 @@ const umamiId = import.meta.env.PUBLIC_UMAMI_ID;
       <div class="mx-auto grid max-w-6xl gap-8 px-6 py-12 text-sm text-attenue md:grid-cols-3">
         <div>
           <p class="font-display text-2xl text-texte">Roman Mitride</p>
-          <p class="mt-2">Rider professionnel de BMX Flatland · Pau · toute la France</p>
+          <p class="mt-2">Rider professionnel de BMX Flatland · {identite.villes} · toute la France</p>
         </div>
         <nav aria-label="Pages" class="flex flex-col gap-2">
           <a href="/show-bmx" class="hover:text-texte">Show BMX</a>

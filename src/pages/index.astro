@@ -6,11 +6,13 @@ import ContactLinks from '../components/ContactLinks.astro';
 import DevisForm from '../components/DevisForm.astro';
 import ReelsCarousel from '../components/ReelsCarousel.tsx';
 import Gallery from '../components/Gallery.tsx';
-import { identite, palmares, phraseCitable, flatlandEnDeuxPhrases, cartes, publics, reels, tarifs, credits } from '../content/site';
+import { aPropos, identite, palmares, phraseCitable, flatlandEnDeuxPhrases, cartes, publics, reels, tarifs, credits } from '../content/site';
 
-import heroH from '../assets/photos/hero-bmx-flatland-mur-raye.jpg';
-import heroV from '../assets/photos/bmx-flatland-mur-raye-face.jpg';
-import portrait from '../assets/photos/portrait-roman-mitride.webp';
+import { medias } from '../content/site';
+import { photo } from '../content/photos';
+const heroH = photo(medias.hero.ordinateur);
+const heroV = photo(medias.hero.mobile);
+const portrait = photo(medias.portrait.photo);
 
 // Hero : photo horizontale sur ordinateur, verticale sur mobile (aucune vidéo au chargement).
 const heroDesk = await getImage({ src: heroH, width: 1920, format: 'avif' });
@@ -19,22 +21,8 @@ const heroMob = await getImage({ src: heroV, width: 828, format: 'avif' });
 const heroMobWebp = await getImage({ src: heroV, width: 828, format: 'webp' });
 const portraitImg = await getImage({ src: portrait, width: 900, format: 'webp' });
 
-// Galerie : textes alternatifs descriptifs (la figure, l'action, le lieu).
-const W = credits.weidemann;
-const galerieSrc = import.meta.glob<{ default: ImageMetadata }>('../assets/photos/*', { eager: true });
-const galerieDef = [
-  ['bmx-flatland-manege-heure-doree.jpg', 'Roman Mitride en équilibre sur la roue avant, sur un miroir d’eau devant un manège à l’heure dorée', W],
-  ['show-bmx-flatland-public.jpg', 'Roman Mitride pendant un show de BMX Flatland, le public souriant derrière les barrières', credits.public],
-  ['bmx-flatland-eclaboussure.jpg', 'Figure de BMX Flatland dans un miroir d’eau, gerbe d’éclaboussures sous un ciel d’orage', W],
-  ['bmx-flatland-statue-vertical.jpg', 'Rotation du vélo au crépuscule, devant une statue et des grilles en fer forgé', W],
-  ['bmx-flatland-vue-plongee-ombre.jpg', 'Vue en plongée d’une figure de BMX Flatland, l’ombre du rider projetée sur un sol rayé', W],
-  ['bmx-flatland-mur-raye-dos.jpg', 'Roman Mitride de dos, pied levé, devant un mur à rayures noires et blanches', W],
-  ['roman-mitride-reflet.jpg', 'Roman Mitride tenant son BMX, son reflet dans une vitre en ville', W],
-  ['roman-mitride-marche-ombre.jpg', 'Roman Mitride marchant à côté de son BMX, longues ombres sur un sol rayé', W],
-  ['bmx-flatland-tailwhip.webp', 'Roman Mitride fait tourner son vélo en appui sur une jambe, devant un escalier', undefined],
-] as const;
-const galerie = await Promise.all(galerieDef.map(async ([f, alt, credit]) => {
-  const src = galerieSrc[`../assets/photos/${f}`].default;
+const galerie = await Promise.all(medias.galerie.map(async ([f, alt, credit]) => {
+  const src = photo(f);
   const thumb = await getImage({ src, width: 700, format: 'webp' });
   const full = await getImage({ src, width: 1800, format: 'webp' });
   return { thumb: thumb.src, full: full.src, alt, w: thumb.attributes.width ?? src.width, h: thumb.attributes.height ?? src.height, credit };
@@ -61,13 +49,13 @@ const jsonld = [{
       <source media="(min-width: 768px)" srcset={heroDesk.src} type="image/avif" />
       <source media="(min-width: 768px)" srcset={heroDeskWebp.src} type="image/webp" />
       <source srcset={heroMob.src} type="image/avif" />
-      <img src={heroMobWebp.src} alt="Roman Mitride en figure de BMX Flatland, roue avant levée, devant un mur à rayures noires et blanches"
-        class="block h-[68svh] w-full object-cover object-[center_25%] md:absolute md:inset-0 md:h-full md:object-left" fetchpriority="high" decoding="async" />
+      <img src={heroMobWebp.src} alt={medias.hero.alt}
+        class="block h-[68svh] w-full object-cover object-[center_25%] md:absolute md:inset-0 md:h-full md:object-[20%_center]" fetchpriority="high" decoding="async" />
     </picture>
     <div class="pointer-events-none absolute inset-x-0 top-0 h-[68svh] bg-gradient-to-t from-fond via-transparent to-fond/40 md:hidden"></div>
     <div class="pointer-events-none absolute inset-0 hidden bg-gradient-to-l from-fond/95 via-fond/60 to-transparent md:block"></div>
     <div class="relative z-10 -mt-16 w-full px-6 pb-4 md:ml-auto md:mt-0 md:w-[52%] md:pb-0 md:pr-16 md:pt-24">
-      <p class="kicker animate-fade-rise">BMX Flatland · Pau · toute la France</p>
+      <p class="kicker animate-fade-rise">BMX Flatland · {identite.villes} · toute la France</p>
       <h1 class="font-display mt-4 text-5xl leading-[0.95] tracking-tight sm:text-6xl lg:text-7xl animate-fade-rise">
         Roman Mitride, <em class="text-accent">rider BMX Flatland</em> professionnel
       </h1>
@@ -90,12 +78,12 @@ const jsonld = [{
 
   <!-- À PROPOS -->
   <section id="a-propos" class="reveal mx-auto grid max-w-6xl items-center gap-10 px-6 pt-24 md:grid-cols-[1fr_1.1fr] md:pt-32">
-    <img src={portraitImg.src} alt="Portrait de Roman Mitride, casquette noire, tenant son BMX devant un bâtiment moderne"
+    <img src={portraitImg.src} alt={medias.portrait.alt}
       width={portraitImg.attributes.width} height={portraitImg.attributes.height} loading="lazy" decoding="async"
       class="aspect-[4/5] w-full rounded-3xl object-cover object-[60%_center]" />
     <div>
       <p class="kicker">À propos</p>
-      <h2 class="font-display mt-3 text-4xl leading-tight md:text-5xl">Le vélo comme <em class="text-accent">terrain de jeu</em></h2>
+      <h2 class="font-display mt-3 text-4xl leading-tight md:text-5xl">{aPropos.titre} <em class="text-accent">{aPropos.titreAccent}</em></h2>
       <p class="mt-6 text-lg leading-relaxed">{phraseCitable}</p>
       <p class="mt-4 leading-relaxed text-texte/85">{flatlandEnDeuxPhrases}</p>
       <p class="mt-4 leading-relaxed text-texte/85">{identite.zone}</p>
