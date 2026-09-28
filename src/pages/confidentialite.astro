@@ -1,0 +1,61 @@
+---
+// URL figée : /confidentialite.html est déclarée dans l'application OAuth Google (Deneb / BMX Flatland Prospector).
+// Les sections 1 à 3 reprennent mot pour mot la version publiée le 2026-09-25 : ne pas les modifier sans
+// répercuter le changement dans le comportement des outils (règle du vault, 2026-09-22).
+import Base from '../layouts/Base.astro';
+import { identite } from '../content/site';
+---
+<Base title="Règles de confidentialité · Roman Mitride" description="Règles de confidentialité du site romanmitride.fr et des outils personnels Deneb et BMX Flatland Prospector.">
+  <main class="prose-legal mx-auto max-w-3xl px-6 py-16 leading-relaxed">
+    <h1 class="text-3xl font-semibold">Règles de confidentialité</h1>
+    <p class="mt-2 text-attenue">Dernière mise à jour : 25 septembre 2026</p>
+
+    <p class="mt-6">Ces règles concernent deux outils personnels utilisés par Roman MITRIDE, BMX Pro Rider : l’assistant
+      <strong>« Deneb »</strong> et l’agent de prospection <strong>« BMX Flatland Prospector »</strong>. Ils ne sont
+      pas proposés au public : leur seul utilisateur est leur propriétaire.</p>
+
+    <h2>1. Données Google (Gmail)</h2>
+    <p>Avec l’autorisation de son propriétaire, l’application accède à <em>sa propre</em> boîte Gmail pour :
+      lire et rechercher des messages, préparer des brouillons, envoyer des réponses et des relances de prospection,
+      appliquer un libellé et mettre des messages à la corbeille. Aucune suppression définitive n’est possible.</p>
+    <p>Pour résumer, classer et rédiger, des extraits de messages sont transmis à l’API Claude d’Anthropic, qui agit
+      comme sous-traitant. Les données ne sont ni vendues, ni louées, ni utilisées à des fins publicitaires, ni
+      partagées avec d’autres tiers. L’utilisation des données reçues des API Google respecte les
+      <a href="https://developers.google.com/terms/api-services-user-data-policy">règles relatives aux données
+      utilisateur des services API Google</a>, y compris les exigences d’utilisation limitée.</p>
+    <p>Les jetons d’accès sont stockés chiffrés ou avec des droits restreints, sur l’ordinateur et le serveur privé
+      du propriétaire. L’accès peut être révoqué à tout moment sur
+      <a href="https://myaccount.google.com/permissions">myaccount.google.com/permissions</a>.</p>
+
+    <h2>2. Organisateurs d’événements contactés</h2>
+    <p>L’agent de prospection recherche des événements publics et l’adresse professionnelle publiée par leurs
+      organisateurs (page contact, presse, mentions légales). Il ne devine aucune adresse et note la source de chacune.
+      Les messages proposent une démonstration de BMX Flatland, en lien avec la fonction du destinataire
+      (prospection entre professionnels).</p>
+    <p>Données conservées : nom de l’événement, nom et fonction du contact s’ils sont publiés, adresse
+      professionnelle, source, historique des échanges. Elles servent uniquement à ce suivi et ne sont jamais cédées.
+      Les coordonnées sont effacées automatiquement trois ans après le dernier échange, et immédiatement sur
+      simple demande.</p>
+    <p>Chaque message comporte un moyen simple de refuser : il suffit de répondre pour demander à ne plus être
+      contacté. L’adresse est alors
+      conservée uniquement dans une liste d’exclusion, pour ne plus jamais être contactée. Vous pouvez aussi demander l’accès,
+      la rectification ou la suppression de vos données à l’adresse ci-dessous, et saisir la
+      <a href="https://www.cnil.fr/fr/plaintes">CNIL</a> si besoin.</p>
+
+    <h2>3. Contact</h2>
+    <p>Roman MITRIDE — <a href={`mailto:${identite.email}`}>{identite.email}</a></p>
+
+    <!-- TODO(lancement) : section « Visiteurs du site » (formulaire de devis, anti-spam Turnstile,
+         mesure d'audience Umami sans cookie + lien d'opposition, hébergement OVH, durées de conservation).
+         À rédiger quand les services seront réellement configurés : la page ne doit décrire que ce qui existe,
+         puis mettre à jour la date ci-dessus. -->
+
+    <p class="mt-10"><a href="/">← Retour à l’accueil</a></p>
+  </main>
+</Base>
+
+<style>
+  .prose-legal :global(h2) { margin-top: 2rem; font-size: 1.2rem; font-weight: 600; }
+  .prose-legal :global(p) { margin-top: 0.75rem; }
+  .prose-legal :global(a) { text-decoration: underline; }
+</style>

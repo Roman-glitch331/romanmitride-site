@@ -1,0 +1,27 @@
+---
+// Squelette : la mise en page définitive (hero vidéo, palette, galerie) attend les médias de Roman.
+import Base from '../layouts/Base.astro';
+import { identite, palmares, phraseCitable, prestations, tarifs } from '../content/site';
+---
+<Base title="Roman Mitride · Rider BMX Flatland professionnel" description={phraseCitable}>
+  <main class="mx-auto max-w-5xl px-6 py-16">
+    <h1 class="text-4xl font-semibold">{identite.nom}, rider BMX Flatland professionnel</h1>
+    <p class="mt-4 max-w-2xl text-attenue">{phraseCitable}</p>
+    <ul class="mt-6 flex flex-wrap gap-3">
+      {palmares.map((p) => <li class="rounded-full border px-4 py-1">{p.rang} {p.libelle} {p.annee}</li>)}
+    </ul>
+
+    <section id="prestations" class="mt-16">
+      <h2 class="text-2xl font-semibold">Prestations</h2>
+      <ul class="mt-4 grid gap-4 md:grid-cols-2">
+        {prestations.map((p) => (
+          <li class="rounded-2xl border p-6">
+            <h3 class="text-lg font-semibold"><a href={`/${p.slug}`}>{p.titre}</a></h3>
+            <p class="mt-2 text-attenue">{p.resume}</p>
+          </li>
+        ))}
+      </ul>
+      <p class="mt-6">Shows à partir de {tarifs.showAPartirDe} €. {tarifs.mentionDevis}</p>
+    </section>
+  </main>
+</Base>

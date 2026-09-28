@@ -1,0 +1,36 @@
+---
+import Base from '../layouts/Base.astro';
+import { editeur, hebergeur, identite } from '../content/site';
+---
+<Base title="Mentions légales · Roman Mitride" description="Mentions légales du site romanmitride.fr : éditeur, directeur de la publication, hébergeur.">
+  <main class="legal mx-auto max-w-3xl px-6 py-16 leading-relaxed">
+    <h1 class="text-3xl font-semibold">Mentions légales</h1>
+
+    <h2>Éditeur du site</h2>
+    <p>{editeur.association}, {editeur.forme}<br />
+      Siège : {editeur.siege}<br />
+      SIRET : {editeur.siret}<br />
+      Téléphone : <a href={`tel:${identite.telephoneIntl}`}>{identite.telephone.replace(/(\d{2})(?=\d)/g, '$1 ')}</a><br />
+      E-mail : <a href={`mailto:${identite.email}`}>{identite.email}</a></p>
+
+    <h2>Directeur de la publication</h2>
+    <p>{editeur.directeurPublication}</p>
+
+    <h2>Hébergeur</h2>
+    <p>{hebergeur.nom}<br />{hebergeur.adresse}<br />Téléphone : {hebergeur.telephone}</p>
+
+    <h2>Propriété intellectuelle</h2>
+    <p>Les textes, photos et vidéos de ce site appartiennent à {identite.nom} ou à leurs auteurs respectifs.
+      Toute reproduction sans autorisation est interdite.</p>
+    <!-- TODO(médias) : crédits photographes, une fois les médias fournis. -->
+
+    <h2>Données personnelles</h2>
+    <p>Voir les <a href="/confidentialite.html">règles de confidentialité</a>.</p>
+  </main>
+</Base>
+
+<style>
+  .legal :global(h2) { margin-top: 2rem; font-size: 1.2rem; font-weight: 600; }
+  .legal :global(p) { margin-top: 0.75rem; }
+  .legal :global(a) { text-decoration: underline; }
+</style>

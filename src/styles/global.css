@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+/* Palette provisoire : elle sera extraite des médias de Roman (étape « design »). */
+@theme {
+  --color-fond: #0b0b0c;
+  --color-texte: #f4f4f2;
+  --color-attenue: #a8a8a3;
+  --color-accent: #e8e6df;
+}
+
+html { background: var(--color-fond); color: var(--color-texte); }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 3px; }

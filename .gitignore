@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.astro/
+.env
+.env.*
+!.env.example
+# Médias bruts : trop lourds pour git, seules les versions compressées sont versionnées
+media-source/
