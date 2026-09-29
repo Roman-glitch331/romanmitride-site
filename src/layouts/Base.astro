@@ -60,7 +60,11 @@ const umamiId = import.meta.env.PUBLIC_UMAMI_ID;
     <slot name="head" />
     <script type="application/ld+json" set:html={JSON.stringify([person, ...jsonld])} />
     {umamiSrc && umamiId && (
-      <script defer src={umamiSrc} data-website-id={umamiId} data-exclude-search="true" data-do-not-track="true"></script>
+      <script is:inline>
+        // CNIL : provenance limitée au domaine (jamais le chemin ni les paramètres).
+        window.umamiAvantEnvoi = function (type, p) { try { if (p && p.referrer) p.referrer = new URL(p.referrer).origin; } catch (e) { p.referrer = ''; } return p; };
+      </script>
+      <script defer src={umamiSrc} data-website-id={umamiId} data-exclude-search="true" data-exclude-hash="true" data-do-not-track="true" data-before-send="umamiAvantEnvoi"></script>
     )}
   </head>
   <body class="min-h-screen font-sans antialiased">

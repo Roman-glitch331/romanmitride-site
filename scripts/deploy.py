@@ -44,7 +44,11 @@ csp = '; '.join([
 
 sites = {
     'preview': 'http://:8080 {\n\timport site\n}',
-    'prod': 'romanmitride.fr {\n\timport site\n}\n\nwww.romanmitride.fr {\n\tredir https://romanmitride.fr{uri} permanent\n}',
+    'prod': 'romanmitride.fr {\n\timport site\n}\n\nwww.romanmitride.fr {\n\tredir https://romanmitride.fr{uri} permanent\n}\n\n'
+            '# Statistiques Umami (conteneur Docker sur 127.0.0.1:3000, voir /opt/umami)\n'
+            'stats.romanmitride.fr {\n\tencode zstd gzip\n\treverse_proxy 127.0.0.1:3000\n'
+            '\theader {\n\t\tStrict-Transport-Security "max-age=31536000; includeSubDomains"\n'
+            '\t\tX-Content-Type-Options "nosniff"\n\t\tReferrer-Policy "strict-origin-when-cross-origin"\n\t\t-Server\n\t}\n}',
 }[MODE]
 caddyfile = open(os.path.join(ROOT, 'deploy', 'Caddyfile.tmpl'), encoding='utf-8').read().replace('__CSP__', csp).replace('__SITES__', sites)
 if MODE == 'preview':  # pas de HSTS ni d'upgrade en HTTP de prévisualisation
