@@ -16,7 +16,9 @@ interface Props {
   fiche: { label: string; valeur: string }[];
 }
 const { title, description, h1, intro, image, imageAlt, slug, serviceName, fiche } = Astro.props;
-const img = await getImage({ src: image, width: 1600, format: 'webp' });
+const imgMob = await getImage({ src: image, width: 828, format: 'avif' });
+const imgDesk = await getImage({ src: image, width: 1600, format: 'avif' });
+const imgFallback = await getImage({ src: image, width: 1200, format: 'webp' });
 const url = `https://romanmitride.fr/${slug}`;
 
 const autres = [
@@ -47,8 +49,16 @@ const jsonld = [
 ];
 ---
 <Base title={title} description={description} jsonld={jsonld} ogImage={`/og-${slug}.jpg`}>
+  <Fragment slot="head">
+    <link rel="preload" as="image" type="image/avif" href={imgMob.src} media="(max-width: 767px)" fetchpriority="high" />
+    <link rel="preload" as="image" type="image/avif" href={imgDesk.src} media="(min-width: 768px)" fetchpriority="high" />
+  </Fragment>
   <header class="relative flex min-h-[70svh] items-end overflow-hidden">
-    <img src={img.src} alt={imageAlt} class="absolute inset-0 h-full w-full object-cover" fetchpriority="high" decoding="async" />
+    <picture>
+      <source media="(min-width: 768px)" srcset={imgDesk.src} type="image/avif" />
+      <source srcset={imgMob.src} type="image/avif" />
+      <img src={imgFallback.src} alt={imageAlt} class="absolute inset-0 h-full w-full object-cover" fetchpriority="high" decoding="async" />
+    </picture>
     <div class="absolute inset-0 bg-gradient-to-t from-fond via-fond/50 to-transparent"></div>
     <div class="relative z-10 mx-auto w-full max-w-4xl px-6 pb-12 pt-32">
       <nav aria-label="Fil d’Ariane" class="text-sm text-attenue animate-fade-rise">

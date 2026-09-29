@@ -1,14 +1,23 @@
 ---
+import { getImage } from 'astro:assets';
 import Base from '../layouts/Base.astro';
+import { photo } from '../content/photos';
+
+const img = await getImage({ src: photo('bmx-flatland-vue-plongee-ombre.jpg'), width: 700, format: 'webp' });
 ---
 <Base title="Page introuvable · Roman Mitride" description="Cette page n'existe pas." noindex>
-  <main class="mx-auto max-w-3xl px-6 pt-40 pb-24 text-center">
-    <h1 class="text-3xl font-semibold">Cette page n’existe pas</h1>
-    <p class="mt-4 text-attenue">Le lien est peut-être ancien. Voici où aller :</p>
-    <nav class="mt-8 flex flex-wrap justify-center gap-4" aria-label="Liens utiles">
-      <a class="underline" href="/">Accueil</a>
-      <a class="underline" href="/#prestations">Prestations</a>
-      <a class="underline" href="/#devis">Demander un devis</a>
-    </nav>
+  <main class="mx-auto grid max-w-5xl items-center gap-10 px-6 pt-36 pb-24 md:grid-cols-2">
+    <img src={img.src} alt="Vue en plongée d’une figure de BMX Flatland, l’ombre du rider projetée au sol"
+      width={img.attributes.width} height={img.attributes.height} class="mx-auto w-full max-w-sm rounded-3xl" />
+    <div>
+      <p class="kicker">Erreur 404</p>
+      <h1 class="font-display mt-3 text-4xl md:text-5xl">Cette page a fait un <em class="text-accent">tailwhip</em>… et elle n’est pas retombée.</h1>
+      <p class="mt-4 text-attenue">Le lien est peut-être ancien. Voici où aller :</p>
+      <nav class="mt-8 flex flex-wrap gap-3" aria-label="Liens utiles">
+        <a class="liquid-glass btn-glass" href="/">Accueil</a>
+        <a class="liquid-glass btn-glass" href="/#prestations">Prestations</a>
+        <a class="btn-accent" href="/#devis" data-umami-event="devis-clic" data-umami-event-emplacement="404">Demander un devis</a>
+      </nav>
+    </div>
   </main>
 </Base>
