@@ -46,7 +46,7 @@ const jsonld = [
   },
 ];
 ---
-<Base title={title} description={description} jsonld={jsonld}>
+<Base title={title} description={description} jsonld={jsonld} ogImage={`/og-${slug}.jpg`}>
   <header class="relative flex min-h-[70svh] items-end overflow-hidden">
     <img src={img.src} alt={imageAlt} class="absolute inset-0 h-full w-full object-cover" fetchpriority="high" decoding="async" />
     <div class="absolute inset-0 bg-gradient-to-t from-fond via-fond/50 to-transparent"></div>

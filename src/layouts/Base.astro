@@ -8,11 +8,12 @@ interface Props {
   description: string;
   noindex?: boolean;
   jsonld?: Record<string, unknown>[];
+  ogImage?: string;
 }
-const { title, description, noindex = false, jsonld = [] } = Astro.props;
+const { title, description, noindex = false, jsonld = [], ogImage: og } = Astro.props;
 const path = Astro.url.pathname.replace(/\.html$/, '').replace(/\/index$/, '/');
 const canonical = new URL(path === '' ? '/' : path, Astro.site).href;
-const ogImage = new URL('/og-image.jpg', Astro.site).href;
+const ogImage = new URL(og ?? '/og-image.jpg', Astro.site).href;
 
 const person = {
   '@context': 'https://schema.org',
