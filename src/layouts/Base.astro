@@ -57,6 +57,7 @@ const umamiId = import.meta.env.PUBLIC_UMAMI_ID;
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
+    <slot name="head" />
     <script type="application/ld+json" set:html={JSON.stringify([person, ...jsonld])} />
     {umamiSrc && umamiId && (
       <script defer src={umamiSrc} data-website-id={umamiId} data-exclude-search="true" data-do-not-track="true"></script>
@@ -117,6 +118,11 @@ const umamiId = import.meta.env.PUBLIC_UMAMI_ID;
         }
       }, { rootMargin: '200px' });
       document.querySelectorAll('video[data-lazy]').forEach((v) => vio.observe(v));
+      // Images d'aperçu des vidéos : posées seulement à l'approche (ne concurrencent pas le hero).
+      const pio = new IntersectionObserver((entries) => {
+        for (const e of entries) if (e.isIntersecting) { const v = e.target as HTMLVideoElement; v.poster = v.dataset.poster!; pio.unobserve(v); }
+      }, { rootMargin: '600px' });
+      document.querySelectorAll<HTMLVideoElement>('video[data-poster]').forEach((v) => pio.observe(v));
 
       // Coordonnées protégées des robots : reconstituées au chargement.
       document.querySelectorAll<HTMLAnchorElement>('a[data-c]').forEach((a) => {

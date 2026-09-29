@@ -6,7 +6,9 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "check": "astro check"
+    "check": "astro check",
+    "deploy": "python scripts/deploy.py prod",
+    "deploy:preview": "python scripts/deploy.py preview"
   },
   "dependencies": {
     "@astrojs/react": "^7.0.0",

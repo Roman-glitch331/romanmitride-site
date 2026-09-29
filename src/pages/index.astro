@@ -43,6 +43,10 @@ const jsonld = [{
 }];
 ---
 <Base title="Roman Mitride · Rider BMX Flatland professionnel, shows et initiations" description={phraseCitable} jsonld={jsonld}>
+  <Fragment slot="head">
+    <link rel="preload" as="image" type="image/avif" href={heroMob.src} media="(max-width: 767px)" fetchpriority="high" />
+    <link rel="preload" as="image" type="image/avif" href={heroDesk.src} media="(min-width: 768px)" fetchpriority="high" />
+  </Fragment>
   <!-- HERO -->
   <section class="relative overflow-hidden md:flex md:min-h-[100svh] md:items-center">
     <picture>

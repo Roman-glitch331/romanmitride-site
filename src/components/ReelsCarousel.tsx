@@ -20,7 +20,11 @@ export default function ReelsCarousel({ reels, profil }: { reels: Reel[]; profil
       }
     }, { threshold: [0, 0.6] });
     vids.current.forEach((v) => v && io.observe(v));
-    return () => io.disconnect();
+    const pio = new IntersectionObserver((entries) => {
+      for (const e of entries) if (e.isIntersecting) { const v = e.target as HTMLVideoElement; v.poster = v.dataset.poster ?? ''; pio.unobserve(v); }
+    }, { rootMargin: '600px' });
+    vids.current.forEach((v) => v && pio.observe(v));
+    return () => { io.disconnect(); pio.disconnect(); };
   }, []);
 
   const defiler = (sens: 1 | -1) => {
@@ -50,7 +54,7 @@ export default function ReelsCarousel({ reels, profil }: { reels: Reel[]; profil
               ref={(el) => { vids.current[i] = el; }}
               data-src={`/media/${r.video}.mp4`}
               data-name={r.video}
-              poster={r.poster}
+              data-poster={r.poster}
               muted
               loop
               playsInline

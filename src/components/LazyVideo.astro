@@ -16,7 +16,7 @@ const poster = src ? await getImage({ src, width: 720, format: 'webp' }) : undef
   loop
   playsinline
   preload="none"
-  poster={poster?.src}
+  data-poster={poster?.src}
   aria-label={label}
   data-umami-event="video-lecture"
   data-umami-event-video={name}
