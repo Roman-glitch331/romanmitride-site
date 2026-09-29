@@ -1,0 +1,28 @@
+# Activer : gh auth refresh -s workflow, puis déplacer ce fichier vers .github/workflows/surveillance.yml et pousser.
+# Surveillance externe de romanmitride.fr (depuis GitHub, pas depuis le VPS) : si une étape échoue,
+# GitHub envoie un e-mail au propriétaire du dépôt.
+name: Surveillance du site
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+jobs:
+  verifier:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Pages principales
+        run: |
+          for u in https://romanmitride.fr/ https://romanmitride.fr/show-bmx https://romanmitride.fr/confidentialite.html https://romanmitride.fr/sitemap-index.xml; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 "$u")
+            echo "$u -> $code"; [ "$code" = 200 ] || { echo "::error::$u répond $code"; exit 1; }
+          done
+      - name: Statistiques Umami
+        run: curl -sf --max-time 20 https://stats.romanmitride.fr/api/heartbeat
+      - name: Certificats HTTPS (alerte à 21 jours de l'expiration)
+        run: |
+          for h in romanmitride.fr stats.romanmitride.fr; do
+            end=$(echo | openssl s_client -connect $h:443 -servername $h 2>/dev/null | openssl x509 -noout -enddate | cut -d= -f2)
+            days=$(( ( $(date -d "$end" +%s) - $(date +%s) ) / 86400 ))
+            echo "$h expire dans $days jours"; [ "$days" -ge 21 ] || { echo "::error::certificat $h expire dans $days jours"; exit 1; }
+          done

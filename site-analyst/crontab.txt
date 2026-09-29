@@ -1,0 +1,14 @@
+# Site Analyst de romanmitride.fr (utilisateur ubuntu : abonnement Claude Pro, jamais de clé API).
+# Fuseau du serveur : Europe/Paris. Les tâches Claude attendent le verrou de BMX Prospector (jamais en parallèle).
+SHELL=/bin/bash
+PATH=/usr/local/bin:/usr/bin:/bin
+V=/home/prospector/vault/Site-Analytics
+
+# Contrôle technique quotidien (sans Claude) : n'écrit dans le vault qu'en cas de problème.
+30 3 * * * site-analyst check >> $HOME/site-analyst.log 2>&1
+# Chiffres bruts de la veille (sans Claude).
+35 3 * * * site-analyst quotidien >> $HOME/site-analyst.log 2>&1
+# Bilans (le 1er et le 15) analysés par Claude, après la veille ; nouvelle tentative chaque heure jusqu'à 7 h 30.
+30 4-7 1,15 * * site-analyst-verrou bilan >> $HOME/site-analyst.log 2>&1
+# Demandes déposées par Deneb dans _demandes/ (vérification légère toutes les 15 min).
+*/15 * * * * grep -lqs 'statut: nouvelle' $V/_demandes/*.md && ATTENTE=840 flock -n /tmp/site-analyst-demandes.lock site-analyst-verrou demandes >> $HOME/site-analyst.log 2>&1
