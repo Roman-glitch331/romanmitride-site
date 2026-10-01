@@ -109,20 +109,33 @@ const umamiId = import.meta.env.PUBLIC_UMAMI_ID;
 
       // Vidéos différées : chargées et lues seulement une fois visibles, jamais si « réduire les animations ».
       const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      // Mobile : la vidéo ne se lance que lorsqu'elle croise le centre de l'écran (une seule à la fois).
+      const mobile = matchMedia('(max-width: 767px)').matches;
+      const charger = (v: HTMLVideoElement) => {
+        if (v.dataset.loaded) return;
+        v.querySelectorAll<HTMLSourceElement>('source[data-src]').forEach((s) => { s.src = s.dataset.src!; });
+        v.load(); v.dataset.loaded = '1';
+      };
       const vio = new IntersectionObserver((entries) => {
         for (const e of entries) {
           const v = e.target as HTMLVideoElement;
           if (e.isIntersecting) {
             if (reduce) continue;
-            if (!v.dataset.loaded) {
-              v.querySelectorAll<HTMLSourceElement>('source[data-src]').forEach((s) => { s.src = s.dataset.src!; });
-              v.load(); v.dataset.loaded = '1';
-            }
-            v.play().catch(() => {});
-          } else v.pause();
+            charger(v);
+            if (!mobile) v.play().catch(() => {});
+          } else if (!mobile) v.pause();
         }
       }, { rootMargin: '200px' });
       document.querySelectorAll('video[data-lazy]').forEach((v) => vio.observe(v));
+      if (mobile && !reduce) {
+        const cio = new IntersectionObserver((entries) => {
+          for (const e of entries) {
+            const v = e.target as HTMLVideoElement;
+            if (e.isIntersecting) { charger(v); v.play().catch(() => {}); } else v.pause();
+          }
+        }, { rootMargin: '-45% 0px -45% 0px' });
+        document.querySelectorAll('video[data-lazy]').forEach((v) => cio.observe(v));
+      }
       // Images d'aperçu des vidéos : posées seulement à l'approche (ne concurrencent pas le hero).
       const pio = new IntersectionObserver((entries) => {
         for (const e of entries) if (e.isIntersecting) { const v = e.target as HTMLVideoElement; v.poster = v.dataset.poster!; pio.unobserve(v); }
