@@ -7,6 +7,12 @@
 	root * /var/www/romanmitride/current
 	encode zstd gzip
 
+	# Doublons d'URL : /index et /index.html -> /, slash final -> sans slash
+	@accueil path /index /index.html
+	redir @accueil / permanent
+	@slash path_regexp slash ^(.+)/$
+	redir @slash {re.slash.1} permanent
+
 	# /page.html -> /page (sauf l'URL figée de l'application OAuth et la 404)
 	@html {
 		path_regexp html ^(.+)\.html$

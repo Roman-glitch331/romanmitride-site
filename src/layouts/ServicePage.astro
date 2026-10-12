@@ -2,7 +2,7 @@
 import { getImage } from 'astro:assets';
 import Base from './Base.astro';
 import ContactLinks from '../components/ContactLinks.astro';
-import { identite, tarifs } from '../content/site';
+import { identite, tarifs, medias } from '../content/site';
 
 interface Props {
   title: string;
@@ -27,7 +27,11 @@ const autres = [
   { href: '/tournage-bmx', label: 'Tournages & images' },
 ].filter((a) => a.href !== `/${slug}`);
 
-const jsonld = [
+// Vidéo de la page (hébergée sur le site) : balisage VideoObject pour l'affichage vidéo de Google.
+const clef = ({ 'show-bmx': 'show', 'initiation-bmx': 'initiation', 'tournage-bmx': 'tournage' } as Record<string, keyof typeof medias.pages>)[slug];
+const video = clef ? medias.pages[clef] : undefined;
+
+const jsonld: Record<string, unknown>[] = [
   {
     '@context': 'https://schema.org',
     '@type': 'Service',
@@ -47,6 +51,17 @@ const jsonld = [
     ],
   },
 ];
+if (video) jsonld.push({
+  '@context': 'https://schema.org',
+  '@type': 'VideoObject',
+  name: `${serviceName} : extrait vidéo`,
+  description: video.alt,
+  thumbnailUrl: `https://romanmitride.fr/og-${slug}.jpg`,
+  contentUrl: `https://romanmitride.fr/media/${video.video}.mp4`,
+  uploadDate: '2026-09-29',
+  inLanguage: 'fr',
+  author: { '@id': 'https://romanmitride.fr/#roman' },
+});
 ---
 <Base title={title} description={description} jsonld={jsonld} ogImage={`/og-${slug}.jpg`}>
   <Fragment slot="head">

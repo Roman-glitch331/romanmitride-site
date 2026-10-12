@@ -11,7 +11,7 @@ export const identite = {
   zone: 'Basé à Pau et à Bordeaux, j’interviens dans toute la France.',
   zoneCourte: 'Toute la France, depuis Pau et Bordeaux',
   telephone: '0628783455',
-  email: 'romanmitridebmx@gmail.com',
+  email: 'contact@romanmitride.fr',
   instagram: 'https://www.instagram.com/romanmitride/',
   tiktok: 'https://www.tiktok.com/@roman_mitride',
 };
