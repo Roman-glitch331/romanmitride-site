@@ -1,6 +1,6 @@
 ---
 import '../styles/global.css';
-import { identite, phraseCitable, credits } from '../content/site';
+import { identite, phraseCitable, credits, presse } from '../content/site';
 import Nav from '../components/Nav.astro';
 
 interface Props {
@@ -28,6 +28,20 @@ const person = {
   telephone: '+33628783455',
   homeLocation: [{ '@type': 'Place', name: 'Pau, France' }, { '@type': 'Place', name: 'Bordeaux, France' }],
   sameAs: [identite.instagram, identite.tiktok],
+  // Interview BICROSS MAGAZINE : uniquement sur l'accueil, où la section visible l'affiche.
+  ...(path === '/' && {
+    subjectOf: {
+      '@type': 'Article',
+      name: 'Interview de Roman Mitride',
+      about: { '@id': 'https://romanmitride.fr/#roman' },
+      isPartOf: {
+        '@type': 'PublicationIssue',
+        issueNumber: presse.numero,
+        datePublished: '2026',
+        isPartOf: { '@type': 'Periodical', name: presse.magazine },
+      },
+    },
+  }),
 };
 
 const umamiSrc = import.meta.env.PUBLIC_UMAMI_SRC;

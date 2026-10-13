@@ -50,7 +50,18 @@ export const aPropos = {
   titreAccent: 'entre Pau et Bordeaux',
 };
 
-export const partenairesDuo = ['Kevin Meyer', 'Anatole Rahain', 'Maxime Luchetti'];
+// Section « Dans la presse » de l'accueil (interview BICROSS MAGAZINE n°10, été 2026).
+// `citation` : moins de 15 mots, exacte, à remplir seulement après contrôle du Relecteur sur les photos ;
+// vide, la citation n'est pas affichée. Pas de lien : aucune version en ligne trouvée.
+export const presse = {
+  magazine: 'BICROSS MAGAZINE',
+  numero: '10',
+  periode: 'été 2026',
+  citation: '',
+  accompagnement: 'Le magazine français du BMX a consacré une interview à Roman. Pour organiser un show ou une initiation, parlons de votre événement.',
+};
+
+export const partenairesDuo =['Kevin Meyer', 'Anatole Rahain', 'Maxime Luchetti'];
 
 export const credits = {
   weidemann: 'Olivier Weidemann',
