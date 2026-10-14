@@ -50,15 +50,35 @@ export const aPropos = {
   titreAccent: 'entre Pau et Bordeaux',
 };
 
-// Section « Dans la presse » de l'accueil (interview BICROSS MAGAZINE n°10, été 2026).
-// `citation` : moins de 15 mots, exacte, à remplir seulement après contrôle du Relecteur sur les photos ;
-// vide, la citation n'est pas affichée. Pas de lien : aucune version en ligne trouvée.
+// Section « Dans la presse » de l'accueil (interview BICROSS MAGAZINE n°10, été 2026, rubrique Flatland).
+// Extraits mot pour mot, contrôlés sur les photos du magazine (pages 74 à 78) ; ne jamais modifier un mot.
+// Pas de lien (aucune version en ligne), pas d'appel à l'action commercial dans cette section.
 export const presse = {
   magazine: 'BICROSS MAGAZINE',
   numero: '10',
   periode: 'été 2026',
-  citation: '',
-  accompagnement: 'Le magazine français du BMX a consacré une interview à Roman. Pour organiser un show ou une initiation, parlons de votre événement.',
+  rubrique: 'Flatland',
+  extraits: [
+    {
+      question: 'Pourquoi le flat ? Et les autres disciplines du bmx ?',
+      reponse: ['En flat, au contraire, je pouvais essayer 500 fois sans la peur de tomber d\'une grosse hauteur. Tu progresses uniquement par la répétition, et ça m\'a plus parlé.'],
+    },
+    {
+      question: 'Qu\'est-ce qui t\'as accroché dans le bmx ?',
+      reponse: [
+        'Le sentiment de réussir une figure après des semaines à y penser, à galérer, à tomber… c\'est une émotion incroyablement puissante.',
+        'Et puis le flat c\'est hyper accessible : j\'ai juste besoin de mon vélo et d\'un sol plat, je peux rouler presque partout.',
+      ],
+    },
+    {
+      question: 'C\'est quoi ton style ?',
+      reponse: ['Je pense vraiment que le riding ressemble toujours à la personnalité du rider […]. Le mien est assez brut, rapide, instinctif. Et je préfère largement une figure simple mais bien exécutée avec du flow, plutôt qu\'un trick ultra tech.'],
+    },
+    {
+      question: 'Quel est l\'objectif au final ?',
+      reponse: ['Aujourd\'hui, mon vrai objectif c\'est simplement de continuer à rouler, découvrir de nouveaux lieux avec mon vélo, rencontrer de nouvelles personnes et garder la passion le plus longtemps possible.'],
+    },
+  ],
 };
 
 export const partenairesDuo =['Kevin Meyer', 'Anatole Rahain', 'Maxime Luchetti'];
