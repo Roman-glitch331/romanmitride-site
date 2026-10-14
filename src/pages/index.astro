@@ -138,9 +138,17 @@ const jsonld = [{
   <section id="presse" class="reveal mx-auto max-w-6xl px-6 pt-24 md:pt-32" aria-labelledby="titre-presse">
     <p class="kicker">Dans la presse</p>
     <h2 id="titre-presse" class="font-display mt-3 text-4xl md:text-5xl">Interviewé par <em class="text-accent">{presse.magazine}</em></h2>
-    {presse.citation && <blockquote class="font-display mt-8 text-2xl leading-snug md:text-3xl">« {presse.citation} »</blockquote>}
-    <p class="mt-6 text-attenue">Roman Mitride, interview dans {presse.magazine} n°{presse.numero}, {presse.periode}.</p>
-    <p class="mt-4 leading-relaxed text-texte/85">{presse.accompagnement}</p>
+    <p class="mt-6 text-attenue">Interview de Roman Mitride, rubrique {presse.rubrique}, <cite>{presse.magazine}</cite> n°{presse.numero}, {presse.periode}.</p>
+    <div class="mt-10 grid gap-10 md:grid-cols-2">
+      {presse.extraits.map((e) => (
+        <article>
+          <h3 class="font-display text-xl text-accent md:text-2xl">{e.question}</h3>
+          <blockquote class="mt-4 space-y-3 border-l-2 border-accent/40 pl-5 leading-relaxed text-texte/90">
+            {e.reponse.map((p) => <p>« {p} »</p>)}
+          </blockquote>
+        </article>
+      ))}
+    </div>
   </section>
 
   <!-- GALERIE -->
