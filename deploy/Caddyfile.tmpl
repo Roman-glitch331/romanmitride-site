@@ -16,7 +16,7 @@
 	# /page.html -> /page (sauf l'URL figée de l'application OAuth et la 404)
 	@html {
 		path_regexp html ^(.+)\.html$
-		not path /confidentialite.html /404.html
+		not path /confidentialite.html /confidentialite-evenementiel.html /404.html
 	}
 	redir @html {re.html.1} permanent
 
