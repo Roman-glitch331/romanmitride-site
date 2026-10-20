@@ -1,0 +1,67 @@
+---
+// URL figée : /confidentialite-evenementiel.html est déclarée dans l'application OAuth Google « prospector-evenementiel ».
+// Ne pas la renommer ni la rediriger. La page /confidentialite.html (Deneb, BMX Flatland Prospector) reste distincte.
+import Base from '../layouts/Base.astro';
+import { identite } from '../content/site';
+---
+<Base title="Confidentialité · Prospector événementiel" description="Règles de confidentialité de l’outil Prospector événementiel : accès Gmail, prospection auprès d’organisateurs d’événements, durée de conservation et droits.">
+  <main class="prose-legal mx-auto max-w-3xl px-6 pt-36 pb-16 leading-relaxed">
+    <h1 class="text-3xl font-semibold">Règles de confidentialité — Prospector événementiel</h1>
+    <p class="mt-2 text-attenue">Dernière mise à jour : 20 octobre 2026</p>
+
+    <p class="mt-6">« Prospector événementiel » est un outil d’aide à la prospection par e-mail. Roman MITRIDE le met à la
+      disposition d’une professionnelle de l’événementiel musical, <strong>Nathalie Rosendo</strong>, pendant une période
+      d’essai. L’outil n’est pas proposé au public.</p>
+
+    <h2>1. Qui fait quoi</h2>
+    <p><strong>Responsable des contacts prospectés :</strong> l’utilisatrice de l’outil, Nathalie Rosendo. Elle choisit les
+      organisateurs à contacter, valide les modèles de messages et répond aux échanges.</p>
+    <p><strong>Fournisseur de l’outil :</strong> Roman MITRIDE. Il héberge l’outil et agit pour le compte de l’utilisatrice.</p>
+
+    <h2>2. Données Google (Gmail)</h2>
+    <p>Avec l’autorisation de l’utilisatrice, l’outil accède à <em>sa propre</em> boîte Gmail. Il demande deux autorisations Google :</p>
+    <ul class="mt-3 list-disc pl-6">
+      <li><strong>lecture</strong> (<code>gmail.readonly</code>) : lire et rechercher les messages, pour suivre les réponses des organisateurs ;</li>
+      <li><strong>rédaction</strong> (<code>gmail.compose</code>) : préparer des brouillons et envoyer les messages de prospection et leurs relances. Les envois sont limités à 10 premiers messages et 3 relances par jour.</li>
+    </ul>
+    <p>L’outil ne supprime aucun message.</p>
+    <p>Pour classer les réponses et rédiger les messages, des extraits de messages sont transmis à l’API Claude d’Anthropic,
+      qui agit comme sous-traitant. Les données ne sont ni vendues, ni louées, ni utilisées à des fins publicitaires, ni
+      partagées avec d’autres tiers.</p>
+    <p>L’utilisation des données reçues des API Google respecte les
+      <a href="https://developers.google.com/terms/api-services-user-data-policy">règles relatives aux données utilisateur
+      des services API Google</a>, y compris les exigences d’utilisation limitée.</p>
+    <p>Les jetons d’accès sont stockés chiffrés, avec des droits restreints, sur le serveur privé de Roman MITRIDE, hébergé
+      chez OVH dans l’Union européenne. L’accès peut être révoqué à tout moment sur
+      <a href="https://myaccount.google.com/permissions">myaccount.google.com/permissions</a>.</p>
+
+    <h2>3. Organisateurs d’événements contactés</h2>
+    <p>L’outil recherche des événements publics et l’adresse professionnelle publiée par leurs organisateurs (page contact,
+      presse, mentions légales). Il ne devine aucune adresse et note la source de chacune. Les messages proposent les
+      prestations de l’utilisatrice, en lien avec la fonction du destinataire : il s’agit de prospection entre professionnels.</p>
+    <p>Données conservées : le nom de l’événement, le nom et la fonction du contact s’ils sont publiés, l’adresse
+      professionnelle, la source et l’historique des échanges. Ces données servent uniquement à ce suivi et ne sont jamais cédées.</p>
+    <p>Chaque message comporte un moyen simple de refuser : il suffit de répondre pour demander à ne plus être contacté.
+      L’adresse est alors conservée uniquement dans une liste d’exclusion.</p>
+
+    <h2>4. Durée de conservation</h2>
+    <p>Les données de l’essai (contacts, historique, jetons Google) sont effacées 30 jours après la fin de l’essai.
+      Toute personne contactée peut aussi demander l’effacement immédiat de ses données.</p>
+
+    <h2>5. Vos droits et contact</h2>
+    <p>Vous pouvez demander l’accès à vos données, leur rectification ou leur suppression :</p>
+    <ul class="mt-3 list-disc pl-6">
+      <li>auprès de l’utilisatrice, Nathalie Rosendo : <a href="mailto:nathalienrosendo@gmail.com">nathalienrosendo@gmail.com</a> ;</li>
+      <li>auprès de Roman MITRIDE : <a href={`mailto:${identite.email}`}>{identite.email}</a>.</li>
+    </ul>
+    <p>Vous pouvez aussi saisir la <a href="https://www.cnil.fr/fr/plaintes">CNIL</a>.</p>
+
+    <p class="mt-10"><a href="/">← Retour à l’accueil</a></p>
+  </main>
+</Base>
+
+<style>
+  .prose-legal :global(h2) { margin-top: 2rem; font-size: 1.2rem; font-weight: 600; }
+  .prose-legal :global(p) { margin-top: 0.75rem; }
+  .prose-legal :global(a) { text-decoration: underline; }
+</style>
