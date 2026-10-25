@@ -14,6 +14,7 @@ const { title, description, noindex = false, jsonld = [], ogImage: og } = Astro.
 const path = Astro.url.pathname.replace(/\.html$/, '').replace(/\/index$/, '/');
 const canonical = new URL(path === '' ? '/' : path, Astro.site).href;
 const ogImage = new URL(og ?? '/og-image.jpg', Astro.site).href;
+const portraitImage = new URL('/og-image.jpg', Astro.site).href;
 
 const person = {
   '@context': 'https://schema.org',
@@ -23,7 +24,7 @@ const person = {
   jobTitle: identite.metier,
   description: phraseCitable,
   url: 'https://romanmitride.fr/',
-  image: ogImage,
+  image: portraitImage,
   email: `mailto:${identite.email}`,
   telephone: '+33628783455',
   homeLocation: [{ '@type': 'Place', name: 'Pau, France' }, { '@type': 'Place', name: 'Bordeaux, France' }],
@@ -41,8 +42,7 @@ const umamiId = import.meta.env.PUBLIC_UMAMI_ID;
     <script is:inline>document.documentElement.classList.add('js')</script>
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonical} />
-    {noindex && <meta name="robots" content="noindex" />}
+    {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
     <meta name="theme-color" content="#171917" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
@@ -53,10 +53,11 @@ const umamiId = import.meta.env.PUBLIC_UMAMI_ID;
     <meta property="og:site_name" content="Roman Mitride" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:url" content={canonical} />
+    {!noindex && <meta property="og:url" content={canonical} />}
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${identite.nom}, ${identite.metier.toLowerCase()}`} />
     <meta name="twitter:card" content="summary_large_image" />
     <slot name="head" />
     <script type="application/ld+json" set:html={JSON.stringify([person, ...jsonld])} />
@@ -90,13 +91,13 @@ const umamiId = import.meta.env.PUBLIC_UMAMI_ID;
           <a href={identite.instagram} class="hover:text-texte" rel="me noopener">Instagram @romanmitride</a>
           <a href={identite.tiktok} class="hover:text-texte" rel="me noopener">TikTok @roman_mitride</a>
           <a href="/mentions-legales" class="hover:text-texte">Mentions légales</a>
-          <a href="/confidentialite.html" class="hover:text-texte">Règles de confidentialité</a>
+          <a href="/confidentialite" class="hover:text-texte">Règles de confidentialité</a>
         </div>
       </div>
       <p class="mx-auto max-w-6xl px-6 pb-10 text-xs text-attenue">
         Photos : {credits.weidemann}, sauf mention contraire. ·
         Ce site présente aussi les outils personnels « Deneb » et « BMX Flatland Prospector » utilisés par Roman MITRIDE
-        (<a class="underline" href="/confidentialite.html">règles de confidentialité</a>).
+        (<a class="underline" href="/confidentialite">règles de confidentialité</a>).
       </p>
     </footer>
 

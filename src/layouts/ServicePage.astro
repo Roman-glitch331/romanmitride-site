@@ -57,7 +57,7 @@ const jsonld = [
     <picture>
       <source media="(min-width: 768px)" srcset={imgDesk.src} type="image/avif" />
       <source srcset={imgMob.src} type="image/avif" />
-      <img src={imgFallback.src} alt={imageAlt} class="absolute inset-0 h-full w-full object-cover" fetchpriority="high" decoding="async" />
+      <img src={imgFallback.src} alt={imageAlt} width={imgFallback.attributes.width} height={imgFallback.attributes.height} class="absolute inset-0 h-full w-full object-cover" fetchpriority="high" decoding="async" />
     </picture>
     <div class="absolute inset-0 bg-gradient-to-t from-fond via-fond/50 to-transparent"></div>
     <div class="relative z-10 mx-auto w-full max-w-4xl px-6 pb-12 pt-32">
