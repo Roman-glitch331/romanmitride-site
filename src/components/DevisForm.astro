@@ -33,7 +33,7 @@ const champ = 'mt-1 w-full rounded-xl border border-ligne bg-fond px-4 py-3 text
   <div aria-hidden="true" class="absolute -left-[9999px]"><label>Ne pas remplir<input name="_gotcha" tabindex="-1" autocomplete="off" /></label></div>
 
   <label class="flex items-start gap-3 text-sm sm:col-span-2">
-    <input type="checkbox" name="consentement" required class="mt-1 h-4 w-4 accent-[#ddbb7f]" />
+    <input type="checkbox" name="consentement" required data-nom="Accord pour être recontacté" class="mt-1 h-4 w-4 accent-[#ddbb7f]" />
     <span>J’accepte que ces informations soient utilisées pour répondre à ma demande de devis.
       <a href="/confidentialite.html#visiteurs" class="underline">En savoir plus</a> *</span>
   </label>
@@ -60,7 +60,7 @@ const champ = 'mt-1 w-full rounded-xl border border-ligne bg-fond px-4 py-3 text
     if (!form.checkValidity()) {
       const invalides = [...form.elements].filter((el) => !(el as HTMLInputElement).checkValidity()) as HTMLElement[];
       invalides.forEach((el) => el.setAttribute('aria-invalid', 'true'));
-      statut.textContent = 'Merci de compléter : ' + invalides.map((el) => el.closest('label')?.textContent?.split('*')[0].trim()).join(', ') + '.';
+      statut.textContent = 'Merci de compléter : ' + invalides.map((el) => el.dataset.nom ?? el.closest('label')?.textContent?.split('*')[0].trim()).join(', ') + '.';
       invalides[0]?.focus();
       return;
     }
