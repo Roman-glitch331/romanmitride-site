@@ -29,6 +29,10 @@ export const phraseCitable =
   'Roman Mitride est un rider professionnel de BMX Flatland, 17e de la Coupe du monde UCI au FISE Montpellier 2025 ' +
   'et 6e aux Championnats de France 2023, qui propose des shows, des initiations et des tournages partout en France.';
 
+// Meta description de l'accueil (≤ 160 caractères, la phrase citable est trop longue pour Google).
+export const descriptionAccueil =
+  'Rider professionnel de BMX Flatland basé à Pau et Bordeaux : shows, initiations et tournages partout en France. 17e de la Coupe du monde UCI 2025.';
+
 export const flatlandEnDeuxPhrases =
   'Le BMX Flatland, c’est l’art de faire tourner, pivoter et tenir en équilibre un BMX sur un sol plat, sans rampe ni module. ' +
   'Chaque figure s’enchaîne comme une chorégraphie : un spectacle technique et fluide, lisible par tous les publics.';
