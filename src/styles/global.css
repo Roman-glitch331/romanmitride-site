@@ -3,6 +3,13 @@
 @import "@fontsource-variable/fraunces/wght-italic.css";
 @import "@fontsource-variable/inter/index.css";
 
+/* Le « j » / « J » de Fraunces a un crochet que Roman trouve bizarre : dans les titres, ces deux lettres
+   seules sont prises dans Georgia (police du système, rien à télécharger). Sans Georgia, Fraunces reste. */
+@font-face { font-family: "J Titres"; font-style: normal; font-weight: 100 900;
+  src: local("Georgia"); unicode-range: U+004A, U+006A; }
+@font-face { font-family: "J Titres"; font-style: italic; font-weight: 100 900;
+  src: local("Georgia Italic"), local("Georgia-Italic"); unicode-range: U+004A, U+006A; }
+
 /* Palette B « Heure dorée », extraite des médias de Roman (scripts/palette.py).
    Contrastes sur --color-fond : texte 15,2:1 · atténué 7,2:1 · accent 9,7:1 (WCAG AA). */
 @theme {
@@ -13,7 +20,7 @@
   --color-accent: #ddbb7f;
   --color-ligne: rgb(236 238 238 / 0.12);
   --font-sans: "Inter Variable", system-ui, sans-serif;
-  --font-display: "Fraunces Variable", Georgia, serif;
+  --font-display: "J Titres", "Fraunces Variable", Georgia, serif;
 }
 
 html { background: var(--color-fond); color: var(--color-texte); scroll-behavior: smooth; scroll-padding-top: 6rem; }
