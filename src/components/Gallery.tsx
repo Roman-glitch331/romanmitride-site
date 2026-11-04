@@ -14,23 +14,45 @@ export default function Gallery({ photos }: { photos: Photo[] }) {
     if (ouvert !== null && !dialog.current?.open) dialog.current?.showModal();
   }, [ouvert]);
 
+  // Mosaïque en colonnes flex (et non `columns` CSS : Safari n'y affiche pas toujours les images).
+  // 2 colonnes et 6 photos sur mobile, 3 colonnes et toutes les photos dès 768 px.
+  const [nbCol, setNbCol] = useState(2);
+  useEffect(() => {
+    const mq = matchMedia('(min-width: 768px)');
+    const maj = () => setNbCol(mq.matches ? 3 : 2);
+    maj();
+    mq.addEventListener('change', maj);
+    return () => mq.removeEventListener('change', maj);
+  }, []);
+  const colonnes: { p: Photo; i: number }[][] = Array.from({ length: nbCol }, () => []);
+  const hauteurs = new Array(nbCol).fill(0);
+  photos.slice(0, nbCol === 2 ? 6 : photos.length).forEach((p, i) => {
+    const c = hauteurs.indexOf(Math.min(...hauteurs));
+    colonnes[c].push({ p, i });
+    hauteurs[c] += p.h / p.w;
+  });
+
   return (
     <>
-      <ul className="columns-2 gap-3 md:columns-3 [&>li]:mb-3">
-        {photos.map((p, i) => (
-          <li key={p.thumb} className={`break-inside-avoid ${i >= 6 ? 'hidden md:block' : ''}`}>
-            <button
-              type="button"
-              className="block w-full overflow-hidden rounded-2xl"
-              onClick={(e) => { declencheur.current = e.currentTarget; setOuvert(i); }}
-              aria-label={`Agrandir : ${p.alt}`}
-            >
-              <img src={p.thumb} alt={p.alt} width={p.w} height={p.h} loading="lazy" decoding="async"
-                className="h-auto w-full transition-transform duration-700 hover:scale-105" />
-            </button>
-          </li>
+      <div className="flex items-start gap-3">
+        {colonnes.map((col, c) => (
+          <ul key={c} className="flex min-w-0 flex-1 flex-col gap-3">
+            {col.map(({ p, i }) => (
+              <li key={p.thumb}>
+                <button
+                  type="button"
+                  className="block w-full overflow-hidden rounded-2xl"
+                  onClick={(e) => { declencheur.current = e.currentTarget; setOuvert(i); }}
+                  aria-label={`Agrandir : ${p.alt}`}
+                >
+                  <img src={p.thumb} alt={p.alt} width={p.w} height={p.h} loading="lazy" decoding="async"
+                    className="block h-auto w-full transition-transform duration-700 hover:scale-105" />
+                </button>
+              </li>
+            ))}
+          </ul>
         ))}
-      </ul>
+      </div>
 
       <dialog
         ref={dialog}

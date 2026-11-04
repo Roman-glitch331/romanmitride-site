@@ -1,6 +1,6 @@
 @import "tailwindcss";
-@import "@fontsource-variable/fraunces/index.css";
-@import "@fontsource-variable/fraunces/wght-italic.css";
+/* Titres en Big Shoulders Display, choisie par Roman le 04/11/2026 (remplace Fraunces : « j » à crochet et italiques jugés trop « IA »). */
+@import "@fontsource-variable/big-shoulders-display";
 @import "@fontsource-variable/inter/index.css";
 
 /* Palette B « Heure dorée », extraite des médias de Roman (scripts/palette.py).
@@ -13,12 +13,16 @@
   --color-accent: #ddbb7f;
   --color-ligne: rgb(236 238 238 / 0.12);
   --font-sans: "Inter Variable", system-ui, sans-serif;
-  --font-display: "Fraunces Variable", Georgia, serif;
+  --font-display: "Big Shoulders Display Variable", "Arial Narrow", system-ui, sans-serif;
 }
 
 html { background: var(--color-fond); color: var(--color-texte); scroll-behavior: smooth; scroll-padding-top: 6rem; }
 body { font-family: var(--font-sans); }
-.font-display { font-family: var(--font-display); font-optical-sizing: auto; }
+.font-display { font-family: var(--font-display); font-weight: 800; letter-spacing: .01em; text-transform: uppercase; }
+h1.font-display, h2.font-display { line-height: .95; }
+h3.font-display { text-transform: none; font-weight: 700; letter-spacing: .02em; line-height: 1.15; }
+/* Mot mis en avant dans un titre : couleur seule, plus d'italique. */
+.font-display em { font-style: normal; }
 
 /* Effet verre, technique reprise des prompts de référence. */
 @layer components {
@@ -54,7 +58,7 @@ body { font-family: var(--font-sans); }
   .btn-glass { display: inline-flex; align-items: center; gap: .5rem; border-radius: 999px; padding: .85rem 1.6rem; font-weight: 500; }
   .kicker { font-size: .75rem; letter-spacing: .22em; text-transform: uppercase; color: var(--color-attenue); }
   .prose-site p { margin-top: 1rem; line-height: 1.75; }
-  .prose-site h2 { margin-top: 3rem; font-family: var(--font-display); font-size: clamp(1.8rem, 4vw, 2.6rem); line-height: 1.1; }
+  .prose-site h2 { margin-top: 3rem; font-family: var(--font-display); font-weight: 800; text-transform: uppercase; font-size: clamp(1.8rem, 4vw, 2.6rem); line-height: 1; }
   .prose-site h3 { margin-top: 2rem; font-size: 1.15rem; font-weight: 600; }
   .prose-site ul { margin-top: 1rem; padding-left: 1.2rem; list-style: disc; }
   .prose-site li { margin-top: .4rem; line-height: 1.6; }
