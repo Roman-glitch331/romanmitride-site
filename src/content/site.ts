@@ -34,7 +34,7 @@ export const flatlandEnDeuxPhrases =
   'Chaque figure s’enchaîne comme une chorégraphie : un spectacle technique et fluide, lisible par tous les publics.';
 
 export const tarifs = {
-  showAPartirDe: 400,
+  showAPartirDe: 500,
   mentionDevis:
     'Chaque devis est construit en fonction de la prestation : il est donc discuté au téléphone avant sa rédaction.',
 };
